@@ -8,7 +8,7 @@ let rgbMinMax = [0, 255];
 let alphaMinMax = [0, 10];
 
 let dirChangeMinMax = [20, 75];
-let sizeMinMax = [0.1, 2.5];
+let sizeMinMax = [0.1, 1.5];
 let speedMinMax = [0.1, 0.5];
 
 let starsNumMinMax = [1, 5];
@@ -16,10 +16,8 @@ let starGenChance = 0.01;
 
 let globalChance = 1;
 
-let centerForce = 0.0001;
-let rotationForce = 0.001;
-
-let zoom = 1;
+let centerForce = 0.00001;
+let rotationForce = 0.0001;
     
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight);
@@ -40,7 +38,7 @@ function setup() {
 }
 
 function draw() {
-    background(0,0.2);
+    background(0,0.5);
 
     for (let i = 0; i < entitiesNum; i++) {
         if (random() < globalChance) {
@@ -171,7 +169,7 @@ class Entità {
                 fill(random(130, 255), random(alphaMinMax[0]*10, alphaMinMax[1]*10));
                 let starX = this.x + random(-this.size, this.size);
                 let starY = this.y + random(-this.size, this.size);
-                let starSize = random(this.size*0.1,this.size*0.5);
+                let starSize = random(this.size*0.05,this.size*0.25);
                 circle(starX, starY, starSize);
             }
         }
