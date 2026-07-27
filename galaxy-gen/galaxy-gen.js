@@ -1,25 +1,26 @@
 let myCanvas;
 
-let entitiesNum = 100;
+let entitiesNum = 1000;
 let allEntities = [];
 
 let colorChangeCoeff = 1;
 let rgbMinMax = [0, 255];
-let alphaMinMax = [0, 50];
+let alphaMinMax = [0, 10];
 
-let dirChangeMinMax = [10, 50];
-let sizeMinMax = [0.01, 1.5];
+let dirChangeMinMax = [1, 50];
+let sizeMinMax = [0.01, 2.5];
 let speedMinMax = [0.1, 1];
 
-let starsNumMinMax = [1, 10];
-let starGenChance = 0.5;
+let starsNumMinMax = [1, 5];
+let starGenChance = 0.01;
 
 let globalChance = 1;
 
-let centerForce = 0.0001;
+let centerForce = 0.00001;
+let rotationForce = 0.00001;
 
 let zoom = 1;
-
+    
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight);
     frameRate(120);
@@ -30,16 +31,20 @@ function setup() {
     let x = width*0.5;
     let y = height*0.5;
     for (let i = 0; i < entitiesNum; i++) {
-        if (random() < 1) {
+        let x, y;
+        if (random() < 0.9) {
             x = random(width);
             y = random(height);
+        } else {
+            x = width * 0.5;
+            y = height * 0.5;
         }
         allEntities.push(new Entità(x,y));
     }
 }
 
 function draw() {
-    background(0,1);
+    background(0,0.2);
 
     for (let i = 0; i < entitiesNum; i++) {
         if (random() < globalChance) {
@@ -146,8 +151,16 @@ class Entità {
         this.x += random(this.speedCoeff * 0.5, this.speedCoeff) * this.dirX;
         this.y += random(this.speedCoeff * 0.5, this.speedCoeff) * this.dirY;
 
-        this.x += (width*0.5 - this.x) * centerForce;
-        this.y += (height*0.5 - this.y) * centerForce;
+        let centerX = width * 0.5;
+        let centerY = height * 0.5;
+        let dx = centerX - this.x;
+        let dy = centerY - this.y;
+        // attrazione verso il centro
+        this.x += dx * centerForce;
+        this.y += dy * centerForce;
+        // rotazione attorno al centro
+        this.x += -dy * rotationForce;
+        this.y += dx * rotationForce;
 
         this.x = constrain(this.x, this.size / 2, windowWidth - this.size / 2);
         this.y = constrain(this.y, this.size / 2, windowHeight - this.size / 2);
@@ -159,7 +172,7 @@ class Entità {
             let starsNum = int(random(starsNumMinMax[0], starsNumMinMax[1]));
             for (let i = 0; i < starsNum; i++) {
                 noStroke();
-                fill(random(130, 255), random(200));
+                fill(random(130, 255), random(alphaMinMax[0]*10, alphaMinMax[1]*10));
                 let starX = this.x + random(-this.size, this.size);
                 let starY = this.y + random(-this.size, this.size);
                 let starSize = random(this.size*0.1,this.size*0.5);
