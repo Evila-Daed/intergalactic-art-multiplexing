@@ -7,17 +7,17 @@ let colorChangeCoeff = 1;
 let rgbMinMax = [0, 255];
 let alphaMinMax = [0, 10];
 
-let dirChangeMinMax = [1, 50];
-let sizeMinMax = [0.01, 2.5];
-let speedMinMax = [0.1, 1];
+let dirChangeMinMax = [20, 75];
+let sizeMinMax = [0.1, 2.5];
+let speedMinMax = [0.1, 0.5];
 
 let starsNumMinMax = [1, 5];
 let starGenChance = 0.01;
 
 let globalChance = 1;
 
-let centerForce = 0.00001;
-let rotationForce = 0.00001;
+let centerForce = 0.0001;
+let rotationForce = 0.001;
 
 let zoom = 1;
     
@@ -29,17 +29,13 @@ function setup() {
 
     allEntities = [];
     let x = width*0.5;
-    let y = height*0.5;
+    let y = height * 0.5;
     for (let i = 0; i < entitiesNum; i++) {
-        let x, y;
-        if (random() < 0.9) {
-            x = random(width);
-            y = random(height);
-        } else {
-            x = width * 0.5;
-            y = height * 0.5;
-        }
-        allEntities.push(new Entità(x,y));
+        let angle = random(TWO_PI);
+        let radius = random(1, width * 0.4);
+        let x = width / 2 + cos(angle) * radius;
+        let y = height / 2 + sin(angle) * radius;
+        allEntities.push(new Entità(x, y));
     }
 }
 
