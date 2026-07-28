@@ -363,7 +363,7 @@ let azioni = [
     "discorrere",
     "emergere",
     "imporre",
-    "inferire",
+    "infierire",
     "maledire",
     "possedere",
     "punire",
