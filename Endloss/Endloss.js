@@ -1,17 +1,29 @@
 let soldiers = [];
 let blood = [];
 let craters = [];
-const N = 100;
+const N = 800;
 
 let font;
 
 let grid;
 let field;
-const GRID_X = 30;
-const GRID_Y = 15;
+const GRID_X = 20;
+const GRID_Y = 20;
+
+const cellSize = 0;
 
 function preload() {
     fonts = loadFont("../font/IBMPlexMono-Bold.ttf");
+}
+
+function windowResized() {
+    resizeCanvas(windowWidth, windowHeight);
+
+    let cellW = width / GRID_X;
+    let cellH = height / GRID_Y;
+
+    grid = new SpatialGrid(cellW, cellH);
+    field = new BattleField(cellW, cellH);
 }
 
 function setup() {
@@ -172,6 +184,7 @@ class BattleField {
     }
   }
   draw() {
+    rectMode(CORNER);
     noStroke();
     for (let x = 0; x < this.cols; x++) {
       for (let y = 0; y < this.rows; y++) {
@@ -190,7 +203,7 @@ class BattleField {
           0.7
         );
         c.value = constrain(c.value, 20, 180);
-        fill(c.value, 150);
+        fill(c.value, 100);
         rect(x * this.w, y * this.h, this.w, this.h);
       }
     }
