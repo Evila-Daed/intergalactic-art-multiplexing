@@ -5,14 +5,14 @@ let allEntities = [];
 
 let colorChangeCoeff = 1;
 let rgbMinMax = [0, 255];
-let alphaMinMax = [0, 10];
+let alphaMinMax = [0, 50];
 
 let dirChangeMinMax = [20, 75];
 let sizeMinMax = [0.1, 1.5];
 let speedMinMax = [0.1, 0.5];
 
 let starsNumMinMax = [1, 5];
-let starGenChance = 0.01;
+let starGenChance = 0.05;
 
 let globalChance = 1;
 
