@@ -9,7 +9,7 @@ let alphaMinMax = [0, 50];
 
 let dirChangeMinMax = [20, 75];
 let sizeMinMax = [0.1, 1.5];
-let speedMinMax = [0.1, 0.5];
+let speedMinMax = [0.1, 2];
 
 let starsNumMinMax = [1, 5];
 let starGenChance = 0.05;
@@ -30,7 +30,7 @@ function setup() {
     let y = height * 0.5;
     for (let i = 0; i < entitiesNum; i++) {
         let angle = random(TWO_PI);
-        let radius = random(1, width * 0.4);
+        let radius = random(1, min(width, height) * 0.4);
         let x = width / 2 + cos(angle) * radius;
         let y = height / 2 + sin(angle) * radius;
         allEntities.push(new Entità(x, y));
@@ -47,6 +47,10 @@ function draw() {
             allEntities[i].display();
         }
     }
+
+    noStroke();
+    fill(0, 50);
+    circle(mouseX, mouseY, min(width, height) * 0.1);
 }
 
 class Entità {
