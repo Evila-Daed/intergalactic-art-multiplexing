@@ -5,7 +5,7 @@ let allEntities = [];
 
 let colorChangeCoeff = 1;
 let rgbMinMax = [0, 255];
-let alphaMinMax = [0, 50];
+let alphaMinMax = [0, 30];
 
 let dirChangeMinMax = [20, 75];
 let sizeMinMax = [0.1, 1.5];
@@ -18,15 +18,20 @@ let globalChance = 1;
 
 let centerForce = 0.00001;
 let rotationForce = 0.0001;
-    
+
+let mouseForce = 0.25;
+let mouseRadius;
+
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight);
     frameRate(120);
 
     background(0);
 
+    mouseRadius = min(width, height) * 0.1;
+
     allEntities = [];
-    let x = width*0.5;
+    let x = width * 0.5;
     let y = height * 0.5;
     for (let i = 0; i < entitiesNum; i++) {
         let angle = random(TWO_PI);
@@ -38,7 +43,7 @@ function setup() {
 }
 
 function draw() {
-    background(0,0.5);
+    background(0, 0.25);
 
     for (let i = 0; i < entitiesNum; i++) {
         if (random() < globalChance) {
@@ -47,14 +52,20 @@ function draw() {
             allEntities[i].display();
         }
     }
+    if (mouseMovedOnce) {
+        noStroke();
+        fill(0, 20);
+        circle(mouseX, mouseY, mouseRadius * 0.75);
+    }
+}
 
-    noStroke();
-    fill(0, 50);
-    circle(mouseX, mouseY, min(width, height) * 0.1);
+let mouseMovedOnce = false;
+function mouseMoved() {
+    mouseMovedOnce = true;
 }
 
 class Entità {
-    constructor(x,y) {
+    constructor(x, y) {
         this.x = x;
         this.y = y;
         this.size = random(sizeMinMax[0], sizeMinMax[1]);
@@ -66,8 +77,8 @@ class Entità {
         this.a = random(alphaMinMax[0], alphaMinMax[1]);
         this.dirChange = random(dirChangeMinMax[0], dirChangeMinMax[1]);
         this.speedCoeff = random(speedMinMax[0], speedMinMax[1]);
-        this.dirX = random([-1,1]);
-        this.dirY = random([-1,1]);
+        this.dirX = random([-1, 1]);
+        this.dirY = random([-1, 1]);
     }
     colorUpdate() {
         if (this.r <= rgbMinMax[0]) {
@@ -160,6 +171,16 @@ class Entità {
         this.x += -dy * rotationForce;
         this.y += dx * rotationForce;
 
+        // perturbazione mouse
+        let mouseDX = this.x - mouseX;
+        let mouseDY = this.y - mouseY;
+        let mouseDist = sqrt(mouseDX * mouseDX + mouseDY * mouseDY);
+        if (mouseDist < mouseRadius && mouseDist > 0) {
+            let force = (mouseRadius - mouseDist) / mouseRadius;
+            this.x += mouseDX / mouseDist * force * mouseForce;
+            this.y += mouseDY / mouseDist * force * mouseForce;
+        }
+
         this.x = constrain(this.x, this.size / 2, windowWidth - this.size / 2);
         this.y = constrain(this.y, this.size / 2, windowHeight - this.size / 2);
         this.size = constrain(this.size, sizeMinMax[0], sizeMinMax[1]);
@@ -170,14 +191,14 @@ class Entità {
             let starsNum = int(random(starsNumMinMax[0], starsNumMinMax[1]));
             for (let i = 0; i < starsNum; i++) {
                 noStroke();
-                fill(random(130, 255), random(alphaMinMax[0]*10, alphaMinMax[1]*10));
+                fill(random(130, 255), random(alphaMinMax[0] * 10, alphaMinMax[1] * 10));
                 let starX = this.x + random(-this.size, this.size);
                 let starY = this.y + random(-this.size, this.size);
-                let starSize = random(this.size*0.05,this.size*0.25);
+                let starSize = random(this.size * 0.05, this.size * 0.25);
                 circle(starX, starY, starSize);
             }
         }
-        
+
         noStroke();
         fill(this.r, this.g, this.b, this.a);
         circle(this.x, this.y, this.size);
