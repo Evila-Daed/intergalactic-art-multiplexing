@@ -7,9 +7,9 @@ let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [0, 20];
+const walkersAlphaMinMax = [0, 35];
 
-const walkersDirChangeMinMax = [10, 90];
+const walkersDirChangeMinMax = [5, 50];
 
 // valori relativi alla dimensione della finestra
 let walkersSizeMinMax = [0, 0];
@@ -17,7 +17,7 @@ let walkersSpeedMinMax = [0, 0];
 
 // stars
 const starsNumMinMax = [1, 10];
-const starsGenerationChance = 0.00001;
+const starsGenerationChance = 0.001;
 
 let starsSizeMinMax = [0, 0];
 let starsPositionOffsetMax = 0;
@@ -43,7 +43,7 @@ function setup() {
 }
 
 function draw() {
-    background(0, 0.25);
+    background(0, 0.5);
 
     for (const walker of walkers) {
         walker.update();
