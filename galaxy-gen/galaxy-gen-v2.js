@@ -25,7 +25,7 @@ let starsPositionOffsetMax = 0;
 // forze
 const centerForce = 0.00001;
 const rotationForce = 0.00005;
-const mouseForce = 0.5;
+const mouseForce = 0.75;
 let mouseRadius;
 
 function setup() {
@@ -230,7 +230,7 @@ function updateDimensions() {
         dimMax * 0.001
     ];
     starsPositionOffsetMax = dimMax * 0.002;
-    mouseRadius = dimMax * 0.2;
+    mouseRadius = dimMax * 0.15;
 }
 
 function windowResized() {
