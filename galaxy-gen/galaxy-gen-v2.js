@@ -31,6 +31,7 @@ let mouseRadius;
 function setup() {
     canvas = createCanvas(windowWidth, windowHeight);
     frameRate(120);
+    background(0);
 
     // calcolo dimensioni relative
     updateDimensions();
@@ -39,8 +40,6 @@ function setup() {
     for (let i = 0; i < walkersNum; i++) {
         walkers.push(new Walker());
     }
-
-    background(0);
 }
 
 function draw() {
