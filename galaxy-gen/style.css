@@ -58,3 +58,28 @@ a {
 a:hover {
     opacity: 1;
 }
+
+#info {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    color: white;
+    text-align: center;
+
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+
+#menu {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    text-align: center;
+
+    opacity: 0;
+    transition: opacity 2s ease;
+}

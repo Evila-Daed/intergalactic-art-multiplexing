@@ -7,7 +7,7 @@ let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [0, 35];
+const walkersAlphaMinMax = [0, 5];
 
 const walkersDirChangeMinMax = [5, 50];
 
@@ -24,8 +24,8 @@ let starsPositionOffsetMax = 0;
 
 // forze
 const centerForce = 0.00001;
-const rotationForce = 0.0001;
-const mouseForce = 0.25;
+const rotationForce = 0.00005;
+const mouseForce = 0.5;
 let mouseRadius;
 
 function setup() {
@@ -218,8 +218,8 @@ class Walker {
 function updateDimensions() {
     dimMax = min(width, height);
     walkersSizeMinMax = [
-        dimMax * 0.0005,
-        dimMax * 0.001
+        dimMax * 0.001,
+        dimMax * 0.0025
     ];
     walkersSpeedMinMax = [
         dimMax * 0.0001,
@@ -230,10 +230,31 @@ function updateDimensions() {
         dimMax * 0.001
     ];
     starsPositionOffsetMax = dimMax * 0.002;
-    mouseRadius = dimMax * 0.1;
+    mouseRadius = dimMax * 0.2;
 }
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     updateDimensions();
 }
+
+window.addEventListener("load", () => {
+    let info = document.getElementById("info");
+    let menu = document.getElementById("menu");
+
+    // entrata frase
+    setTimeout(() => {
+        info.style.opacity = 1;
+    }, 500);
+
+    // uscita frase
+    setTimeout(() => {
+        info.style.opacity = 0;
+    }, 4500);
+
+    // entrata menu
+    setTimeout(() => {
+        menu.style.opacity = 1;
+    }, 6500);
+
+});
