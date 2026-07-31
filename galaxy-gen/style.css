@@ -3,8 +3,8 @@
     src: url("../font/IBMPlexMono-Bold.ttf");
 }
 
-body {
-    font-family: "IBM Plex Mono", monospace;
+* {
+    box-sizing: border-box;
 }
 
 html,
@@ -14,72 +14,71 @@ body {
     overflow: hidden;
     width: 100%;
     height: 100%;
+    background: black;
+    font-family: "IBM Plex Mono", monospace;
 }
 
+/* CANVAS */
 canvas {
     position: fixed;
     inset: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: -1;
 }
 
-#menu-container {
-    position: absolute;
+/* CONTENITORI TESTO */
+#info,
+#menu {
+    position: fixed;
+    width: 90vw;
+    max-width: 900px;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-}
-
-nav {
     text-align: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 2s ease;
 }
 
+/* FRASE INIZIALE */
+#info {
+    font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+    letter-spacing: 0.15em;
+}
+
+/* MENU */
+#menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* TITOLO */
 h1 {
+    margin: 0 0 5vh 0;
     color: white;
     font-weight: normal;
-    font-size: 1.2rem;
+    font-size: clamp(1rem, 2vw, 1.6rem);
     letter-spacing: 0.15em;
     white-space: nowrap;
-    margin-bottom: 50px;
 }
 
+/* LINK */
 p {
-    margin: 8px 0;
+    margin: 1.5vh 0;
 }
 
 a {
     color: white;
     text-decoration: none;
     opacity: 0.6;
-    font-size: 0.9rem;
-    letter-spacing: 0.1em;
-    transition: opacity 0.3s;
+    font-size: clamp(0.7rem, 1.2vw, 1rem);
+    letter-spacing: 0.15em;
+    transition: opacity 0.3s ease;
 }
 
 a:hover {
     opacity: 1;
-}
-
-#info {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    color: white;
-    text-align: center;
-
-    opacity: 0;
-    transition: opacity 2s ease;
-}
-
-#menu {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-
-    text-align: center;
-
-    opacity: 0;
-    transition: opacity 2s ease;
 }
