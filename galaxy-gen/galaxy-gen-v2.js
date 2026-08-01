@@ -7,7 +7,7 @@ let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [0, 5];
+const walkersAlphaMinMax = [0, 10];
 
 const walkersDirChangeMinMax = [5, 50];
 
@@ -29,7 +29,7 @@ const mouseForce = 0.75;
 let mouseRadius;
 
 function setup() {
-    canvas = createCanvas(windowWidth, windowHeight);
+    createCanvas(windowWidth, windowHeight);
     frameRate(120);
     background(0);
 
@@ -43,7 +43,7 @@ function setup() {
 }
 
 function draw() {
-    background(0, 0.5);
+    background(0, 0.25);
 
     for (const walker of walkers) {
         walker.update();
@@ -219,7 +219,7 @@ function updateDimensions() {
     dimMax = min(width, height);
     walkersSizeMinMax = [
         dimMax * 0.001,
-        dimMax * 0.0025
+        dimMax * 0.005
     ];
     walkersSpeedMinMax = [
         dimMax * 0.0001,
