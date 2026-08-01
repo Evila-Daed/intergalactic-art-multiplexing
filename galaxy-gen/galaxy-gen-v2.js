@@ -7,7 +7,7 @@ let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [0, 10];
+const walkersAlphaMinMax = [0, 30];
 
 const walkersDirChangeMinMax = [5, 50];
 
@@ -24,7 +24,7 @@ let starsPositionOffsetMax = 0;
 
 // forze
 const centerForce = 0.00001;
-const rotationForce = 0.00005;
+const rotationForce = 0.00002;
 const mouseForce = 0.75;
 let mouseRadius;
 
@@ -218,8 +218,8 @@ class Walker {
 function updateDimensions() {
     dimMax = min(width, height);
     walkersSizeMinMax = [
-        dimMax * 0.001,
-        dimMax * 0.005
+        dimMax * 0.0005,
+        dimMax * 0.001
     ];
     walkersSpeedMinMax = [
         dimMax * 0.0001,
@@ -236,6 +236,13 @@ function updateDimensions() {
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     updateDimensions();
+}
+
+function resizeWalkers() {
+    for (let walker of walkers) {
+        walker.x = width * 0.5 + (walker.x - width * 0.5) * 0.9;
+        walker.y = height * 0.5 + (walker.y - height * 0.5) * 0.9;
+    }
 }
 
 window.addEventListener("load", () => {
