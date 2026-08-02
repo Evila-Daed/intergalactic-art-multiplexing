@@ -252,16 +252,16 @@ window.addEventListener("load", () => {
     // entrata frase
     setTimeout(() => {
         info.style.opacity = 1;
-    }, 2000);
+    }, 1000);
 
     // uscita frase
     setTimeout(() => {
         info.style.opacity = 0;
-    }, 6000);
+    }, 3000);
 
     // entrata menu
     setTimeout(() => {
         menu.style.opacity = 1;
-    }, 9000);
+    }, 4000);
 
 });
