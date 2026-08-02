@@ -15,10 +15,10 @@ var roomSize;
 var fonts = [];
 
 function preload() {
-    fonts.push(loadFont("../font/IBMPlexMono-Bold.ttf"));
+    fonts.push(loadFont("../../font/IBMPlexMono-Bold.ttf"));
     //fonts.push(loadFont("../font/IBMPlexMono-Light.ttf"));
-    fonts.push(loadFont("../font/IBMPlexMono-Medium.ttf"));
-    fonts.push(loadFont("../font/IBMPlexMono-Regular.ttf"));
+    fonts.push(loadFont("../../font/IBMPlexMono-Medium.ttf"));
+    fonts.push(loadFont("../../font/IBMPlexMono-Regular.ttf"));
     //fonts.push(loadFont("../font/IBMPlexMono-Thin.ttf"));
 }
 

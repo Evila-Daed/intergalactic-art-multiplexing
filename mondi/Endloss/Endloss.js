@@ -3,18 +3,12 @@ let blood = [];
 let craters = [];
 const N = 500;
 
-let font;
-
 let grid;
 let field;
 const GRID_X = 20;
 const GRID_Y = 20;
 
 const cellSize = 0;
-
-function preload() {
-    fonts = loadFont("../font/IBMPlexMono-Bold.ttf");
-}
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
@@ -28,7 +22,6 @@ function windowResized() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  textAlign(CENTER, BOTTOM);
   rectMode(CENTER);
   frameRate(60);
 
