@@ -8,7 +8,7 @@ function setup() {
   createCanvas(windowWidth,windowHeight,WEBGL);
   angleMode(DEGREES);
   rectMode(CENTER);
-  frameRate(30);
+  frameRate(120);
   smooth();
 
   maxDim = min(width,height);
@@ -25,7 +25,7 @@ function setup() {
 function draw() {
   background(180);
 
-  rotateY(frameCount);
+  rotateY(frameCount*0.1);
 
   push();
   noStroke();

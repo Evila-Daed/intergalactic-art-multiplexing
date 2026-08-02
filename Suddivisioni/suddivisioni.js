@@ -2,9 +2,6 @@ let suddivisioni = [];
 let angleX = 0;
 let angleY = 0;
 let angleZ = 0;
-let angle = 0;
-let currentAxis = 0;
-let cambioAsse = true;
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
@@ -37,7 +34,15 @@ function setup() {
 function draw() {
     push();
 
-    rotateFigure();
+    let phaseX = angleX % 360;
+    let speedX = map(abs(sin(phaseX)), 0, 1, 0.0001, 8.13);
+    angleX += speedX;
+    let phaseY = angleY % 360;
+    let speedY = map(abs(sin(phaseY)), 0, 1, 0.0001, 6.11);
+    angleY += speedY;
+    let phaseZ = angleZ % 360;
+    let speedZ = map(abs(sin(phaseZ)), 0, 1, 0.0001, 5.29);
+    angleZ += speedZ;
     rotateX(angleX);
     rotateY(angleY);
     rotateZ(angleZ);
@@ -72,39 +77,6 @@ function draw() {
         }
     }
     pop();
-}
-
-function rotateFigure() {
-    // canvas rotation
-    let phase = angle % 360;
-    let speed = map(abs(sin(phase)), 0, 1, 0.01, 5);
-    angle += speed;
-
-    if (currentAxis == 0) {
-        angleX = angle;
-    }
-    if (currentAxis == 1) {
-        angleY = angle;
-    }
-    if (currentAxis == 2) {
-        angleZ = angle;
-    }
-    if (angle % 180 < speed && cambioAsse) {
-        currentAxis = int(random(3));
-        if (currentAxis == 0) {
-            angle = angleX;
-        }
-        if (currentAxis == 1) {
-            angle = angleY;
-        }
-        if (currentAxis == 2) {
-            angle = angleZ;
-        }
-        cambioAsse = false;
-    }
-    if (abs(angle % 180) > 10) {
-        cambioAsse = true;
-    }
 }
 
 function trovaDivisibili(s, array) {
@@ -225,9 +197,9 @@ function suddividi(s) {
 function render(s) {
     if (s.children.length == 0) {
         fill(s.hue, s.s, s.b);
-        noStroke();
-        //stroke(0);
-        //strokeWeight(map(s.level,0,10,3,0.2));
+        //noStroke();
+        stroke(0);
+        strokeWeight(map(s.level,0,10,3,0.2));
         push();
         translate(s.x + s.w / 2, s.y + s.h / 2, s.z);
         rotateZ(s.rot);

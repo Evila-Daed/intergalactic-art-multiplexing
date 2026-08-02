@@ -11,6 +11,7 @@ function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
     angleMode(DEGREES);
     frameRate(120);
+    smooth();
 
     maxDim = min(width / 3, height / 3);
 
@@ -22,7 +23,7 @@ function setup() {
 function draw() {
     background(135, 206, 250);
 
-    rotateY(frameCount * 1.13);
+    rotateY(frameCount * 0.13);
 
     push();
     noStroke();
@@ -51,30 +52,30 @@ class Nuvola {
         this.i = i;
         this.color = color(random(50, 255));
         this.pos = createVector(
-            random(-maxDim, maxDim),
+            random(-maxDim*0.75, maxDim*0.75),
             random(-maxDim * 0.75, -maxDim * 0.25),
-            random(-maxDim, maxDim)
+            random(-maxDim*0.75, maxDim*0.75)
         );
-        this.water = random(10, 50);
+        this.water = random(5, 50);
         this.rotY = random(360);
     }
     update() {
+        // pioggia
         if (random() < 0.005 && this.water > 20) {
             drops.push(new Goccia(this));
-            this.water -= random(0.1,0.5);
+            this.water -= random(0.1,0.25);
         }
 
         // assorbimento
-        if (random() < 0.005 && groundWater > 0 && this.water < 50) {
-            let rndVal = random(0.5,1);
+        if (random() < 0.001 && groundWater > 0 && this.water < 50) {
+            let rndVal = random(1, 5);
             this.water += rndVal;
             groundWater -= rndVal;
         }
     }
     display() {
         push();
-        strokeWeight(this.water * 0.02);
-        stroke(0);
+        noStroke();
         fill(this.color);
         translate(this.pos);
         rotateY(this.rotY);
@@ -87,8 +88,8 @@ class Goccia {
     constructor(cloud) {
         this.cloud = cloud;
         this.pos = cloud.pos.copy();
-        this.color = random(50, 100);
-        this.speed = random(2, 5);
+        this.color = cloud.color;
+        this.speed = random(1, 2.5);
         this.dead = false;
     }
     update() {
