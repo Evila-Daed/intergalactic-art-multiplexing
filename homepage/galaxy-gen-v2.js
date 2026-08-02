@@ -2,14 +2,14 @@
 let dimMax;
 
 // walkers
-const walkersNum = 1000;
+const walkersNum = 2000;
 let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [0, 30];
+const walkersAlphaMinMax = [5, 30];
 
-const walkersDirChangeMinMax = [5, 50];
+const walkersDirChangeMinMax = [25, 80];
 
 // valori relativi alla dimensione della finestra
 let walkersSizeMinMax = [0, 0];
@@ -17,7 +17,7 @@ let walkersSpeedMinMax = [0, 0];
 
 // stars
 const starsNumMinMax = [1, 10];
-const starsGenerationChance = 0.001;
+const starsGenerationChance = 0.005;
 
 let starsSizeMinMax = [0, 0];
 let starsPositionOffsetMax = 0;
@@ -31,7 +31,7 @@ let mouseRadius;
 function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(120);
-    background(0);
+    background(20);
 
     // calcolo dimensioni relative
     updateDimensions();
@@ -43,7 +43,7 @@ function setup() {
 }
 
 function draw() {
-    background(0, 0.25);
+    background(20, 0.5);
 
     for (const walker of walkers) {
         walker.update();
@@ -53,8 +53,15 @@ function draw() {
 
     if (mouseMovedOnce) {
         noStroke();
-        fill(0, 20);
-        circle(mouseX, mouseY, mouseRadius * 0.75);
+
+        for (let i = 5; i > 0; i--) {
+            fill(20, 8);
+            circle(
+                mouseX,
+                mouseY,
+                mouseRadius * i / 5
+            );
+        }
     }
 }
 
@@ -68,13 +75,20 @@ class Walker {
         this.spawn();
     }
     spawn() {
-        let angle = random(TWO_PI);
-        let radius = abs(randomGaussian(
-            dimMax * 0.15,
-            dimMax * 0.1
-        ));
-        this.x = width / 2 + cos(angle) * radius * 1.5;
-        this.y = height / 2 + sin(angle) * radius * 0.5;
+        if (random() < 0.7) {
+            // 70% dei walker: nucleo galattico
+            let angle = random(TWO_PI);
+            let radius = abs(randomGaussian(
+                dimMax * 0.2,
+                dimMax * 0.15
+            ));
+            this.x = width / 2 + cos(angle) * radius * 1.3;
+            this.y = height / 2 + sin(angle) * radius * 0.8;
+        } else {
+            // 30%: materia diffusa
+            this.x = random(width * 0.05, width * 0.95);
+            this.y = random(height * 0.05, height * 0.95);
+        }
         this.size = random(walkersSizeMinMax[0], walkersSizeMinMax[1]);
         this.dirX = random([-1, 1]);
         this.dirY = random([-1, 1]);
@@ -219,15 +233,15 @@ function updateDimensions() {
     dimMax = min(width, height);
     walkersSizeMinMax = [
         dimMax * 0.0005,
-        dimMax * 0.001
+        dimMax * 0.0025
     ];
     walkersSpeedMinMax = [
         dimMax * 0.0001,
         dimMax * 0.001
     ];
     starsSizeMinMax = [
-        dimMax * 0.0001,
-        dimMax * 0.001
+        dimMax * 0.00005,
+        dimMax * 0.0001
     ];
     starsPositionOffsetMax = dimMax * 0.002;
     mouseRadius = dimMax * 0.15;
