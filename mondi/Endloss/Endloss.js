@@ -1,7 +1,7 @@
 let soldiers = [];
 let blood = [];
 let craters = [];
-const N = 800;
+const N = 500;
 
 let font;
 
