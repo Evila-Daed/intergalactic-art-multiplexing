@@ -260,6 +260,8 @@ function resizeWalkers() {
 }
 
 window.addEventListener("load", () => {
+    startAudioSystem();
+
     let info = document.getElementById("info");
     let menu = document.getElementById("menu");
 
