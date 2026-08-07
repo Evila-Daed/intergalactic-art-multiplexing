@@ -28,6 +28,19 @@ const rotationForce = 0.00002;
 const mouseForce = 0.75;
 let mouseRadius;
 
+// audio
+let starsAudio;
+let padAudio;
+let glitchAudio;
+let nasaAudio;
+
+function preload() {
+  starsAudio = loadSound("homepage/audio/starsAudio.mp3");
+  padAudio = loadSound("homepage/audio/padAudio.mp3");
+  glitchAudio = loadSound("homepage/audio/glitchAudio.mp3");
+  nasaAudio = loadSound("homepage/audio/nasaAudio.mp3");
+}
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(120);
@@ -40,6 +53,15 @@ function setup() {
     for (let i = 0; i < walkersNum; i++) {
         walkers.push(new Walker());
     }
+
+    starsAudio.loop();
+    starsAudio.amp(0.2);
+    padAudio.loop();
+    padAudio.amp(0.1);
+    glitchAudio.loop();
+    glitchAudio.amp(0.1);
+    nasaAudio.loop();
+    nasaAudio.amp(0.2);
 }
 
 function draw() {
@@ -260,8 +282,6 @@ function resizeWalkers() {
 }
 
 window.addEventListener("load", () => {
-    startAudioSystem();
-
     let info = document.getElementById("info");
     let menu = document.getElementById("menu");
 

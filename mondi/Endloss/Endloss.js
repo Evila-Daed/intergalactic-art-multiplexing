@@ -11,6 +11,12 @@ const GRID_Y = 20;
 const cellSize = 0;
 let DIM = 0;
 
+// AUDIO
+let noise;
+let env;
+let filter;
+let soundscape;
+
 let params = {
   cohesion: 0,
   speed: 1,
@@ -34,10 +40,26 @@ function windowResized() {
   updateMenuPosition();
 }
 
+function preload() {
+  soundscape = loadSound("soundscape.mp3");
+}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   frameRate(60);
+
+  // AUDIO
+  noise = new p5.Noise("white");
+  filter = new p5.LowPass();
+  noise.disconnect();
+  noise.connect(filter);
+  env = new p5.Envelope();
+  env.setRange(0.1, 0);
+  noise.start();
+  noise.amp(0);
+  soundscape.loop();
+  soundscape.amp(0.2);
 
   DIM = min(width, height);
 
@@ -106,13 +128,13 @@ function draw() {
   drawMenu();
 }
 
+// MENU
 function keyPressed() {
   if (keyCode === TAB) {
     menuOpen = !menuOpen;
     return false;
   }
 }
-
 function createMenu() {
   let x = DIM * 0.02;
   let w = DIM * 0.20;
@@ -140,8 +162,6 @@ function createMenu() {
   damageSlider.position(x, startY + gap * 4 + sliderOffset);
   damageSlider.style("width", w + "px");
 }
-
-
 function drawMenu() {
   let pad = DIM * 0.02;
   let startY = DIM * 0.04;
@@ -169,7 +189,6 @@ function drawMenu() {
 
   pop();
 }
-
 function updateMenuPosition() {
   let x = DIM * 0.02;
   let w = DIM * 0.20;
@@ -356,7 +375,7 @@ class Soldier {
     }
 
     // decaDIMento naturale
-    this.hp -= 0.001;
+    //this.hp -= 0.001;
 
     // morte improvvisa
     if (random() < params.artilleryChance) {
@@ -365,7 +384,8 @@ class Soldier {
     }
 
     // respawm
-    if (this.hp <= 0) {
+    if (this.hp <= 0.1) {
+      playDeathSound();
       blood.push(new Blood(this.pos.x, this.pos.y, random(0.001, 0.02) * DIM));
       this.spawn();
     }
@@ -551,4 +571,16 @@ class BattleField {
       }
     }
   }
+}
+
+function playDeathSound() {
+  let attack = 0.001;
+  let decay = random(0.01, 0.1);
+  env.setADSR(attack, decay, 0, 2.5);
+  filter.freq(random(100, 500));
+  filter.res(10);
+  env.play(noise);
+}
+function mousePressed() {
+  userStartAudio();
 }
