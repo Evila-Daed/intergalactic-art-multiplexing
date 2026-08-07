@@ -87,6 +87,10 @@ function draw() {
     }
 }
 
+function mousePressed() {
+  userStartAudio();
+}
+
 let mouseMovedOnce = false;
 function mouseMoved() {
     mouseMovedOnce = true;
