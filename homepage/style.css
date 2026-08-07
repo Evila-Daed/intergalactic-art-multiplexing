@@ -95,3 +95,15 @@ a {
 a:hover {
     opacity: 1;
 }
+
+#signal-counter {
+    position: fixed;
+    bottom: 2vh;
+    left: 5vw;
+    width: 90vw;
+    text-align: center;
+    color: white;
+    font-size: clamp(10px, 1vw, 20px);
+    font-family: "IBM Plex Mono", monospace;
+    z-index: 10;
+}
