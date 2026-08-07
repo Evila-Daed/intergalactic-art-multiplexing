@@ -2,14 +2,14 @@
 let dimMax;
 
 // walkers
-const walkersNum = 2000;
+const walkersNum = 1000;
 let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [5, 30];
+const walkersAlphaMinMax = [2.5, 25];
 
-const walkersDirChangeMinMax = [25, 80];
+const walkersDirChangeMinMax = [50, 95];
 
 // valori relativi alla dimensione della finestra
 let walkersSizeMinMax = [0, 0];
@@ -43,7 +43,7 @@ function preload() {
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
-    frameRate(120);
+    frameRate(60);
     background(20);
 
     // calcolo dimensioni relative
