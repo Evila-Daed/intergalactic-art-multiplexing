@@ -24,7 +24,15 @@ let params = {
   artilleryChance: 0.001,
   damage: 0.1
 };
-let cohesionSlider, speedSlider, fearSlider, artilleryChanceSlider, damageSlider;
+
+let cohesionSlider;
+let speedSlider;
+let fearSlider;
+let artilleryChanceSlider;
+let damageSlider;
+let menuX;
+let menuY;
+let menuGap;
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
@@ -55,11 +63,11 @@ function setup() {
   noise.disconnect();
   noise.connect(filter);
   env = new p5.Envelope();
-  env.setRange(0.1, 0);
+  env.setRange(0.25, 0);
   noise.start();
   noise.amp(0);
   soundscape.loop();
-  soundscape.amp(0.2);
+  soundscape.amp(0.75);
 
   DIM = min(width, height);
 
@@ -73,7 +81,7 @@ function setup() {
     soldiers.push(new Soldier(faction, i));
   }
 
-  createMenu();
+  createMenu(DIM);
 }
 
 function draw() {
@@ -120,6 +128,7 @@ function draw() {
     s.draw();
   }
 
+  // getting params and display sliders
   params.cohesion = cohesionSlider.value();
   params.speed = speedSlider.value();
   params.fear = fearSlider.value();
@@ -127,79 +136,6 @@ function draw() {
   params.damage = damageSlider.value();
   drawMenu();
 }
-
-// MENU
-function keyPressed() {
-  if (keyCode === TAB) {
-    menuOpen = !menuOpen;
-    return false;
-  }
-}
-function createMenu() {
-  let x = DIM * 0.02;
-  let w = DIM * 0.20;
-  let startY = DIM * 0.04;
-  let gap = DIM * 0.06;
-  let sliderOffset = DIM * 0.018;
-
-  cohesionSlider = createSlider(0, 1, 0, 0.01);
-  cohesionSlider.position(x, startY + sliderOffset);
-  cohesionSlider.style("width", w + "px");
-
-  speedSlider = createSlider(0, 5, 1, 0.01);
-  speedSlider.position(x, startY + gap + sliderOffset);
-  speedSlider.style("width", w + "px");
-
-  fearSlider = createSlider(0, 1, 0.5, 0.01);
-  fearSlider.position(x, startY + gap * 2 + sliderOffset);
-  fearSlider.style("width", w + "px");
-
-  artilleryChanceSlider = createSlider(0, 0.01, 0.001, 0.0001);
-  artilleryChanceSlider.position(x, startY + gap * 3 + sliderOffset);
-  artilleryChanceSlider.style("width", w + "px");
-
-  damageSlider = createSlider(0, 1, 0.1, 0.01);
-  damageSlider.position(x, startY + gap * 4 + sliderOffset);
-  damageSlider.style("width", w + "px");
-}
-function drawMenu() {
-  let pad = DIM * 0.02;
-  let startY = DIM * 0.04;
-  let gap = DIM * 0.06;
-
-  let menuW = DIM * 0.25;
-  let menuH = gap * 6;
-
-  push();
-
-  rectMode(CORNER);
-  fill(0,100);
-  noStroke();
-  rect(0,0,menuW,menuH);
-
-  fill(255);
-  textAlign(LEFT,TOP);
-  textSize(DIM * 0.015);
-
-  text("COHESION", pad, startY);
-  text("SPEED", pad, startY + gap);
-  text("FEAR", pad, startY + gap * 2);
-  text("ARTILLERY", pad, startY + gap * 3);
-  text("DAMAGE", pad, startY + gap * 4);
-
-  pop();
-}
-function updateMenuPosition() {
-  let x = DIM * 0.02;
-  let w = DIM * 0.20;
-
-  cohesionSlider.style("width", w + "px");
-  speedSlider.style("width", w + "px");
-  fearSlider.style("width", w + "px");
-  artilleryChanceSlider.style("width", w + "px");
-  damageSlider.style("width", w + "px");
-}
-
 
 class Soldier {
   constructor(faction, id) {
@@ -583,4 +519,71 @@ function playDeathSound() {
 }
 function mousePressed() {
   userStartAudio();
+}
+
+
+// SLIDER
+function createMenu() {
+
+  menuX = DIM * 0.05;
+  menuY = DIM * 0.05;
+  menuGap = DIM * 0.08;
+
+  cohesionSlider = createSlider(0,1,0,0.01);
+  speedSlider = createSlider(0,5,1,0.01);
+  fearSlider = createSlider(0,1,0.5,0.01);
+  artilleryChanceSlider = createSlider(0,0.01,0.001,0.0001);
+  damageSlider = createSlider(0,1,0.1,0.01);
+
+  styleSlider(cohesionSlider);
+  styleSlider(speedSlider);
+  styleSlider(fearSlider);
+  styleSlider(artilleryChanceSlider);
+  styleSlider(damageSlider);
+
+  updateMenuPosition();
+}
+
+function styleSlider(slider) {
+  slider.class("war-slider");
+  slider.style("width", DIM * 0.2 + "px");
+}
+
+function updateMenuPosition() {
+  menuX = DIM * 0.035;
+  menuY = DIM * 0.035;
+  menuGap = DIM * 0.075;
+
+  let offset = DIM * 0.04;
+
+  cohesionSlider.position(menuX, menuY + offset);
+  speedSlider.position(menuX, menuY + menuGap + offset);
+  fearSlider.position(menuX, menuY + menuGap * 2 + offset);
+  artilleryChanceSlider.position(menuX, menuY + menuGap * 3 + offset);
+  damageSlider.position(menuX, menuY + menuGap * 4 + offset);
+
+  let w = DIM * 0.35;
+
+  cohesionSlider.style("width", w + "px");
+  speedSlider.style("width", w + "px");
+  fearSlider.style("width", w + "px");
+  artilleryChanceSlider.style("width", w + "px");
+  damageSlider.style("width", w + "px");
+}
+
+function drawMenu() {
+  push();
+
+  fill(255);
+  noStroke();
+  textAlign(LEFT, TOP);
+  textSize(DIM * 0.025);
+
+  text("COHESION", menuX, menuY);
+  text("SPEED", menuX, menuY + menuGap);
+  text("FEAR", menuX, menuY + menuGap * 2);
+  text("ARTILLERY", menuX, menuY + menuGap * 3);
+  text("DAMAGE", menuX, menuY + menuGap * 4);
+
+  pop();
 }

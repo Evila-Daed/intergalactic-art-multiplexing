@@ -54,14 +54,7 @@ function setup() {
         walkers.push(new Walker());
     }
 
-    starsAudio.loop();
-    starsAudio.amp(0.2);
-    padAudio.loop();
-    padAudio.amp(0.1);
-    glitchAudio.loop();
-    glitchAudio.amp(0.1);
-    nasaAudio.loop();
-    nasaAudio.amp(0.2);
+    startAudioLoop();
 }
 
 function draw() {
@@ -90,6 +83,29 @@ function draw() {
 function mousePressed() {
   userStartAudio();
 }
+function startAudioLoop() {
+    starsAudio.loop();
+    starsAudio.amp(0.2);
+    padAudio.loop();
+    padAudio.amp(0.1);
+    glitchAudio.loop();
+    glitchAudio.amp(0.1);
+    nasaAudio.loop();
+    nasaAudio.amp(0.2);
+}
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        starsAudio.pause();
+        padAudio.pause();
+        glitchAudio.pause();
+        nasaAudio.pause();
+    } else {
+        starsAudio.play();
+        padAudio.play();
+        glitchAudio.play();
+        nasaAudio.play();
+    }
+});
 
 let mouseMovedOnce = false;
 function mouseMoved() {
