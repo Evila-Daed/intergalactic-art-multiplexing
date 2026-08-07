@@ -520,6 +520,15 @@ function playDeathSound() {
 function mousePressed() {
   userStartAudio();
 }
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        noise.stop();
+        soundscape.stop();
+    } else {
+        noise.start();
+        soundscape.loop();
+    }
+});
 
 
 // SLIDER
