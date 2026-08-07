@@ -12,6 +12,11 @@ var font;
 var cam1;
 var roomSize;
 
+const bgColor = 120;
+const skyColor = 220;
+const groundColor = 50;
+const textColor = 50;
+
 var fonts = [];
 
 function preload() {
@@ -30,8 +35,6 @@ function setup() {
     angleMode(DEGREES);
     frameRate(30);
     smooth();
-
-    colorDeclaration();
 
     // dimensioni
     roomSize = min(width, height);
@@ -61,7 +64,7 @@ function draw() {
     push();
     translate(0, roomSize * 1.5, 0);
     rotateX(90);
-    fill(50);
+    fill(groundColor);
     rect(0, 0, roomSize * 2, roomSize * 2);
     pop();
     // soffitto
@@ -143,13 +146,13 @@ class Persona {
             push();
             translate(this.pos.x, this.pos.y - this.textDimension / 4, this.pos.z);
             rotateY(this.rotYCoeff);
-            fill(50);
+            fill(textColor);
             textFont(this.font);
             textSize(this.textDimension);
             text(this.text, 0, 0);
             pop();
 
-            stroke(50);
+            stroke(textColor);
             strokeWeight(this.textDimension * 0.1);
             line(this.pos.x, this.pos.y, this.pos.z, this.pos.x, roomSize * 1.5 - 1, this.pos.z);
             //strokeWeight(this.textDimension * 0.05);

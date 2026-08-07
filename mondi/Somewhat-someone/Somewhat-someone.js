@@ -9,6 +9,8 @@ var tempCanvas;
 
 var fonts = [];
 
+const bgColor = 120;
+
 function preload() {
     fonts.push(loadFont("../../font/IBMPlexMono-Bold.ttf"));
     fonts.push(loadFont("../../font/IBMPlexMono-Light.ttf"));
@@ -24,8 +26,6 @@ function setup() {
     mainCanvas.style("z-index", "-1");
     frameRate(30);
     smooth();
-
-    colorDeclaration();
     
     textAlign(CENTER, CENTER);
     angleMode(DEGREES);
@@ -39,9 +39,7 @@ function setup() {
 }
 
 function draw() {
-    let bgTemp = bgColor;
-    bgTemp.setAlpha(0.1);
-    tempCanvas.background(bgTemp);
+    tempCanvas.background(bgColor, 0.1);
 
     for (var i = 0; i < viteNum; i++) {
         if (vite[i].aliveState === 1) {
