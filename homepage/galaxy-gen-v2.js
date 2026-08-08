@@ -7,9 +7,9 @@ let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [2.5, 25];
+const walkersAlphaMinMax = [2.5, 20];
 
-const walkersDirChangeMinMax = [50, 95];
+const walkersDirChangeMinMax = [10, 75];
 
 // valori relativi alla dimensione della finestra
 let walkersSizeMinMax = [0, 0];
@@ -68,7 +68,6 @@ function draw() {
 
     if (mouseMovedOnce) {
         noStroke();
-
         for (let i = 5; i > 0; i--) {
             fill(20, 8);
             circle(
@@ -275,7 +274,7 @@ function updateDimensions() {
     dimMax = min(width, height);
     walkersSizeMinMax = [
         dimMax * 0.0005,
-        dimMax * 0.0025
+        dimMax * 0.001
     ];
     walkersSpeedMinMax = [
         dimMax * 0.0001,
@@ -286,7 +285,7 @@ function updateDimensions() {
         dimMax * 0.0001
     ];
     starsPositionOffsetMax = dimMax * 0.002;
-    mouseRadius = dimMax * 0.15;
+    mouseRadius = dimMax * 0.05;
 }
 
 function windowResized() {
@@ -304,20 +303,30 @@ function resizeWalkers() {
 window.addEventListener("load", () => {
     let info = document.getElementById("info");
     let menu = document.getElementById("menu");
+    let menuToggle = document.getElementById("menu-toggle");
+    let menuLinks = document.getElementById("menu-links");
 
     // entrata frase
     setTimeout(() => {
         info.style.opacity = 1;
     }, 1000);
-
     // uscita frase
     setTimeout(() => {
         info.style.opacity = 0;
-    }, 3000);
-
+    }, 2000);
     // entrata menu
     setTimeout(() => {
         menu.style.opacity = 1;
-    }, 4000);
+    }, 3000);
 
+    // apertura / chiusura link
+    menuToggle.addEventListener("click", () => {
+        if (menuLinks.classList.contains("collapsed")) {
+            menuLinks.classList.remove("collapsed");
+            menuToggle.textContent = "HIDE";
+        } else {
+            menuLinks.classList.add("collapsed");
+            menuToggle.textContent = "SHOW";
+        }
+    });
 });
