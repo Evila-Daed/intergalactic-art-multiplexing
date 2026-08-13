@@ -1,5 +1,5 @@
 let flowers = [];
-const flowersNum = 50;
+const flowersNum = 10;
 let cam1;
 let maxDim = 0;
 
@@ -8,7 +8,7 @@ function setup() {
   createCanvas(windowWidth,windowHeight,WEBGL);
   angleMode(DEGREES);
   rectMode(CENTER);
-  frameRate(120);
+  frameRate(60);
   smooth();
 
   maxDim = min(width,height);
@@ -25,14 +25,15 @@ function setup() {
 function draw() {
   background(180);
 
-  rotateY(frameCount*0.1);
+  rotateY(frameCount*0.051);
 
   push();
-  noStroke();
-  fill(0);
+  stroke(0);
+  strokeWeight(maxDim*0.0075)
+  noFill();
   translate(0,height/2,0);
   rotateX(90);  
-  box(maxDim,maxDim,10);
+  box(maxDim,maxDim,maxDim*0.02);
   pop();
 
   for (let i = 0; i < flowersNum; i++) {
@@ -50,8 +51,8 @@ class Fiore {
   }   
   spawn() {
     this.pos.set(random(-maxDim/3,maxDim/3),random(-maxDim/2,maxDim/4),random(-maxDim/3,maxDim/3));
-    this.size.set(height*random(0.1,0.2),height*random(0.1,0.2),height*random(0.1,0.2));
-    this.elementsNum = int(random(2,16));
+    this.size.set(height*random(0.05,0.2),height*random(0.05,0.2),height*random(0.05,0.2));
+    this.elementsNum = int(random(2,25));
     this.elementsParam = [];
     this.generateElements();
   }
@@ -74,13 +75,22 @@ class Fiore {
     }
   }
   display() {
+    push();
+    noFill();
+    stroke(0);
+    strokeWeight(this.size.x*0.01);
+    translate(this.pos);
+    box(this.size.x*1.5,this.size.y*1.5,this.size.z*1.5);
+    pop();
+
     for (let e = 0; e < this.elementsNum; e++) {
       push();
       translate(this.elementsParam[e].x,this.elementsParam[e].y,this.elementsParam[e].z);
       rotateX(this.elementsParam[e].rotX);
       rotateY(this.elementsParam[e].rotY);
       rotateZ(this.elementsParam[e].rotZ);
-      noStroke();
+      strokeWeight(this.elementsParam[e].sizeX*0.005);
+      stroke(0);
       fill(this.elementsParam[e].r,this.elementsParam[e].g,this.elementsParam[e].b);
       if (this.elementsParam[e].shape == 0) {
         rect(0,0,this.elementsParam[e].sizeX,this.elementsParam[e].sizeY);
@@ -91,8 +101,8 @@ class Fiore {
       pop();
     }
     stroke(0);
-    strokeWeight(1);
-    line(this.pos.x, this.pos.y, this.pos.z,
+    strokeWeight(this.size.x*0.02);
+    line(this.pos.x, this.pos.y+this.size.y/1.5, this.pos.z,
       this.pos.x, height / 2, this.pos.z
     );
 
