@@ -23,14 +23,14 @@ function setup() {
 }
 
 function draw() {
-  background(180);
+  background(25,189,255);
 
   rotateY(frameCount*0.051);
 
   push();
+  fill(126,200,80);
   stroke(0);
-  strokeWeight(maxDim*0.0075)
-  noFill();
+  strokeWeight(maxDim*0.005);
   translate(0,height/2,0);
   rotateX(90);  
   box(maxDim,maxDim,maxDim*0.02);
