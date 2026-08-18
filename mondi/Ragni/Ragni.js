@@ -6,8 +6,8 @@ let dim, bounds;
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   frameRate(60);
-  dim = min(width, height);
-  bounds = { x: width * 0.5, y: height * 0.5, z: dim * 0.5 };
+  dim = min(width, height)*0.5;
+  bounds = { x: dim * 0.5, y: dim * 0.5, z: dim * 0.5 };
 
   for (let i = 0; i < SPIDERS_NUM; i++) spiders.push(new Spider());
 }
@@ -20,6 +20,11 @@ function draw() {
   rotateY(frameCount * 0.00151);
   rotateZ(frameCount * 0.00129);
 
+  noFill();
+  strokeWeight(dim*0.005);
+  stroke(20);
+  box(dim);
+
   for (let s of spiders) {
     s.update();
     s.display();
@@ -28,8 +33,8 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  dim = min(width, height);
-  bounds = { x: width * 0.5, y: height * 0.5, z: dim * 0.5 };
+  dim = min(width, height)*0.5;
+  bounds = { x: dim * 0.5, y: dim * 0.5, z: dim * 0.5 };
 }
 
 class Spider {
@@ -40,20 +45,20 @@ class Spider {
     this.spawn();
   }
   spawn() {
-    this.position.set(0, 0, 0);
+    this.position.set(random(-dim*0.5,dim*0.5),random(-dim*0.5,dim*0.5),random(-dim*0.5,dim*0.5));
     this.direction.set(p5.Vector.random3D());
-    this.color = color(random(150));
-    this.speed = dim * 0.005 * random(0.15,1.5);
-    this.turnChance = random(0.1,0.5);
+    this.color = color(random(50,150));
+    this.speed = dim * 0.01 * random(0.001,1);
+    this.turnChance = random(0.01,0.5);
 
     this.trail = [];
-    this.trailLength = int(random(50,500));
-    this.size = dim * 0.003 * random(0.25,2);
+    this.trailLength = int(random(20,200));
+    this.size = dim * 0.005 * random(0.25,1);
 
     this.mode = "wander";
     this.circleChance = random(0.0001,0.01);
 
-    this.respawnChance = 0.005;
+    this.respawnChance = 0;
   }
   update() {
     if (this.mode === "wander") {
@@ -97,8 +102,8 @@ class Spider {
     this.mode = "circle";
     this.center = this.position.copy();
     this.axis = p5.Vector.random3D();
-    this.offsetAmp = random(dim * 0.005, dim * 0.03);
-    this.offsetCycles = random(1, 5);
+    this.offsetAmp = random(dim * 0.001, dim * 0.1);
+    this.offsetCycles = random(1, 10);
 
     let a = abs(this.axis.x) < 0.9
       ? createVector(1, 0, 0)
