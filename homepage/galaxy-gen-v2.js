@@ -309,15 +309,15 @@ window.addEventListener("load", () => {
     // entrata frase
     setTimeout(() => {
         info.style.opacity = 1;
-    }, 1000);
+    }, 1500);
     // uscita frase
     setTimeout(() => {
         info.style.opacity = 0;
-    }, 2000);
+    }, 4500);
     // entrata menu
     setTimeout(() => {
         menu.style.opacity = 1;
-    }, 3000);
+    }, 6000);
 
     // apertura / chiusura link
     menuToggle.addEventListener("click", () => {
