@@ -7,7 +7,7 @@ let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [2.5, 20];
+const walkersAlphaMinMax = [2.5, 40];
 
 const walkersDirChangeMinMax = [10, 75];
 
@@ -28,23 +28,10 @@ const rotationForce = 0.00002;
 const mouseForce = 0.75;
 let mouseRadius;
 
-// audio
-let starsAudio;
-let padAudio;
-let glitchAudio;
-let nasaAudio;
-
-function preload() {
-  starsAudio = loadSound("homepage/audio/starsAudio.mp3");
-  padAudio = loadSound("homepage/audio/padAudio.mp3");
-  glitchAudio = loadSound("homepage/audio/glitchAudio.mp3");
-  nasaAudio = loadSound("homepage/audio/nasaAudio.mp3");
-}
-
 function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(60);
-    background(20);
+    background(10);
 
     // calcolo dimensioni relative
     updateDimensions();
@@ -53,12 +40,10 @@ function setup() {
     for (let i = 0; i < walkersNum; i++) {
         walkers.push(new Walker());
     }
-
-    startAudioLoop();
 }
 
 function draw() {
-    background(20, 0.5);
+    background(10, 0.25);
 
     for (const walker of walkers) {
         walker.update();
@@ -69,7 +54,7 @@ function draw() {
     if (mouseMovedOnce) {
         noStroke();
         for (let i = 5; i > 0; i--) {
-            fill(20, 8);
+            fill(10, 15);
             circle(
                 mouseX,
                 mouseY,
@@ -78,33 +63,6 @@ function draw() {
         }
     }
 }
-
-function mousePressed() {
-  userStartAudio();
-}
-function startAudioLoop() {
-    starsAudio.loop();
-    starsAudio.amp(0.2);
-    padAudio.loop();
-    padAudio.amp(0.1);
-    glitchAudio.loop();
-    glitchAudio.amp(0.1);
-    nasaAudio.loop();
-    nasaAudio.amp(0.2);
-}
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-        starsAudio.pause();
-        padAudio.pause();
-        glitchAudio.pause();
-        nasaAudio.pause();
-    } else {
-        starsAudio.play();
-        padAudio.play();
-        glitchAudio.play();
-        nasaAudio.play();
-    }
-});
 
 let mouseMovedOnce = false;
 function mouseMoved() {

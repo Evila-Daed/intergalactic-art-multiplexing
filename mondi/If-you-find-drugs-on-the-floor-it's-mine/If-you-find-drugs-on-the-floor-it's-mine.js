@@ -1,115 +1,23 @@
 var myCanvas;
 
-var boxNum;
-var boxNumMinMax = [20, 20];
-var speedMinMax = [0.1, 10];
+const boxNum = 25;
+var speedMinMax = [0.5, 2.5];
 
 var allBox = []; // lista con tutti i punti x,y,size
 
-var rotationIndex = [];
-var rotationSpeed = [];
-var rotationIndexText = [];
-var rotationSpeedText = [];
-
-var xMinMax = [];
-var yMinMax = [];
-var zMinMax = [];
+let dimMax;
 
 function setup() {
     myCanvas = createCanvas(windowWidth, windowHeight, WEBGL);
-    myCanvas.position(0, 0);
-    myCanvas.style("z-index", "-1");
-    frameRate(30);
-    noSmooth();
+    frameRate(60);
+    smooth();
     angleMode(DEGREES);
 
-    // indici di rotazione e velocità
-    rotationIndex = [0, 0, 0];
-    var rotationDirX, rotationDirY, rotationDirZ;
-    if (random(1) < 0.5) {
-        rotationDirX = 1;
-    } else {
-        rotationDirX = -1;
-    }
-    if (random(1) < 0.5) {
-        rotationDirY = 1;
-    } else {
-        rotationDirY = -1;
-    }
-    if (random(1) < 0.5) {
-        rotationDirZ = 1;
-    } else {
-        rotationDirZ = -1;
-    }
-    rotationSpeed = [random(0.4, 0.6) * rotationDirX, random(0.4, 0.6) * rotationDirY, random(0.4, 0.6) * rotationDirZ];
-
-    rotationIndexText = [0, 0, 0];
-    var rotationDirXtext, rotationDirYtext, rotationDirZtext;
-    if (random(1) < 0.5) {
-        rotationDirXtext = 1;
-    } else {
-        rotationDirXtext = -1;
-    }
-    if (random(1) < 0.5) {
-        rotationDirYtext = 1;
-    } else {
-        rotationDirYtext = -1;
-    }
-    if (random(1) < 0.5) {
-        rotationDirZtext = 1;
-    } else {
-        rotationDirZtext = -1;
-    }
-    rotationSpeedText = [random(0.3, 0.6) * rotationDirXtext, random(0.3, 0.6) * rotationDirYtext, random(0.3, 0.6) * rotationDirZtext];
-
-    // set minmax based on screen ratio
-    if (windowWidth > windowHeight) {
-        xMinMax = [-windowHeight / 4, windowHeight / 4];
-        yMinMax = [-windowHeight / 4, windowHeight / 4];
-        zMinMax = [-windowHeight / 4, windowHeight / 4];
-    } else {
-        xMinMax = [-windowWidth / 4, windowWidth / 4];
-        yMinMax = [-windowWidth / 4, windowWidth / 4];
-        zMinMax = [-windowWidth / 4, windowWidth / 4];
-    }
+    dimMax = min(width, height) * 0.5;
 
     // crea array di vertici
-    boxNum = int(random(boxNumMinMax[0],boxNumMinMax[1]));
     for (var i = 0; i < boxNum; i++) {
-        // direzione random
-        var dirX, dirY, dirZ;
-        if (random(1) < 0.5) {
-            dirX = 1;
-        } else {
-            dirX = -1;
-        }
-        if (random(1) < 0.5) {
-            dirY = 1;
-        } else {
-            dirY = -1;
-        }
-        if (random(1) < 0.5) {
-            dirZ = 1;
-        } else {
-            dirZ = -1;
-        }
-        allBox.push(
-            new Scatola(
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                random(speedMinMax[0], speedMinMax[1]) * dirX, // speedX
-                random(speedMinMax[0], speedMinMax[1]) * dirY, // speedY
-                random(speedMinMax[0], speedMinMax[1]) * dirZ, // speedZ
-                random(255), // r
-                random(255), // g
-                random(255), // b
-                i, // index
-            )
-        );
+        allBox.push(new Scatola(i));
     }
     background(0);
 }
@@ -119,100 +27,119 @@ function draw() {
 
     background(0);
 
-    for (var i = 0; i < 3; i++) {
-        if (rotationIndex[i] < 360) {
-            rotationIndex[i] += rotationSpeed[i];
-        } else {
-            rotationIndex[i] = 0;
-        }
-        if (rotationIndexText[i] < 360) {
-            rotationIndexText[i] += rotationSpeed[i];
-        } else {
-            rotationIndexText[i] = 0;
-        }
-    }
+    rotateX(frameCount * 0.15);
+    rotateY(frameCount * 0.17);
+    rotateZ(frameCount * 0.11);
 
-    push();
-    rotateX(rotationIndex[0]);
-    rotateY(rotationIndex[1]);
-    rotateZ(rotationIndex[2]);
     for (var i = 0; i < allBox.length; i++) {
-        allBox[i].display();
-        allBox[i].move();
+        allBox[i].update();
     }
-    pop();
 }
 
 
 class Scatola {
-    constructor(x, y, z, xOffset, yOffset, zOffset, speedX, speedY, speedZ, r, g, b, i) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.xOffset = xOffset;
-        this.yOffset = yOffset;
-        this.zOffset = zOffset;
-        this.speedX = speedX;
-        this.speedY = speedY;
-        this.speedZ = speedZ;
-        this.r = r;
-        this.g = g;
-        this.b = b;
+    constructor(i) {
         this.i = i;
+        this.speed = createVector(0, 0, 0);
+        this.offset = createVector(0, 0, 0);
+        this.rotation = createVector(0, 0, 0);
+        this.spawn();
+
+    }
+    spawn() {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+
+        this.offset.set(0, 0, 0);
+
+        let dirX = random() < 0.5 ? -1 : 1;
+        let dirY = random() < 0.5 ? -1 : 1;
+        let dirZ = random() < 0.5 ? -1 : 1;
+        this.speedX = random(speedMinMax[0], speedMinMax[1]) * dirX;
+        this.speedY = random(speedMinMax[0], speedMinMax[1]) * dirY;
+        this.speedZ = random(speedMinMax[0], speedMinMax[1]) * dirZ;
+        this.speed.set(
+            random(speedMinMax[0], speedMinMax[1]) * dirX,
+            random(speedMinMax[0], speedMinMax[1]) * dirY,
+            random(speedMinMax[0], speedMinMax[1]) * dirZ
+        );
+
+        this.r = random(255);
+        this.g = random(255);
+        this.b = random(255);
+        this.colorChangeSpeed = random(0.1, 10);
+
+        let rotationMax = 1.5;
+        this.rotation.set(
+            random(-rotationMax, rotationMax),
+            random(-rotationMax, rotationMax),
+            random(-rotationMax, rotationMax)
+        );
+    }
+    update() {
+        this.move();
+        this.colorChange();
+
+        if (random() < 0.001) {
+            this.spawn();
+        }
+
+        this.display();
     }
     move() {
+        if (this.x <= -dimMax || this.x >= dimMax) {
+            this.speed.x *= -1;
+        }
+        if (this.y <= -dimMax || this.y >= dimMax) {
+            this.speed.y *= -1;
+        }
+        if (this.z <= -dimMax || this.z >= dimMax) {
+            this.speed.z *= -1;
+        }
 
-        if (this.x <= xMinMax[0] || this.x >= xMinMax[1]) {
-            this.speedX *= -1;
-        }
-        if (this.y <= yMinMax[0] || this.y >= yMinMax[1]) {
-            this.speedY *= -1;
-        }
-        if (this.z <= zMinMax[0] || this.z >= zMinMax[1]) {
-            this.speedZ *= -1;
-        }
-
-        if (this.xOffset < xMinMax[0] / 2) {
-            this.xOffset += abs(this.speedX * 0.3);
-        } else if (this.xOffset > xMinMax[1]) {
-            this.xOffset -= abs(this.speedX * 0.3);
+        if (this.offset.x < -dimMax / 2) {
+            this.offset.x += abs(this.speed.x * 0.3);
+        } else if (this.offset.x > dimMax / 2) {
+            this.offset.x -= abs(this.speed.x * 0.3);
         } else {
             if (random(1) < 0.50) {
-                this.xOffset += abs(this.speedX * 0.3);
+                this.offset.x += abs(this.speed.x * 0.3);
             } else {
-                this.xOffset -= abs(this.speedX * 0.3);
+                this.offset.x -= abs(this.speed.x * 0.3);
             }
         }
-        if (this.yOffset < yMinMax[0] / 2) {
-            this.yOffset += abs(this.speedY * 0.3);
-        } else if (this.yOffset > yMinMax[1]) {
-            this.yOffset -= abs(this.speedY * 0.3);
+        if (this.offset.y < -dimMax / 2) {
+            this.offset.y += abs(this.speed.y * 0.3);
+        } else if (this.offset.y > dimMax / 2) {
+            this.offset.y -= abs(this.speed.y * 0.3);
         } else {
             if (random(1) < 0.50) {
-                this.yOffset += abs(this.speedY * 0.3);
+                this.offset.y += abs(this.speed.y * 0.3);
             } else {
-                this.yOffset -= abs(this.speedY * 0.3);
+                this.offset.y -= abs(this.speed.y * 0.3);
             }
         }
-        if (this.zOffset < zMinMax[0] / 2) {
-            this.zOffset += abs(this.speedZ * 0.3);
-        } else if (this.zOffset > zMinMax[1]) {
-            this.yOffset -= abs(this.speedY * 0.3);
+        if (this.offset.z < -dimMax / 2) {
+            this.offset.z += abs(this.speed.z * 0.3);
+        } else if (this.offset.z > dimMax / 2) {
+            this.offset.z -= abs(this.speed.z * 0.3);
         } else {
             if (random(1) < 0.50) {
-                this.yOffset += abs(this.speedY * 0.3);
+                this.offset.z += abs(this.speed.z * 0.3);
             } else {
-                this.yOffset -= abs(this.speedY * 0.3);
+                this.offset.z -= abs(this.speed.z * 0.3);
             }
         }
 
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.z += this.speedZ;
-
-        this.r += random(-10, 10);
-        this.g += random(-10, 10);
-        this.b += random(-10, 10);
+        this.x += this.speed.x;
+        this.y += this.speed.y;
+        this.z += this.speed.z;
+    }
+    colorChange() {
+        this.r += random(-this.colorChangeSpeed, this.colorChangeSpeed);
+        this.g += random(-this.colorChangeSpeed, this.colorChangeSpeed);
+        this.b += random(-this.colorChangeSpeed, this.colorChangeSpeed);
 
         this.r = constrain(this.r, 0, 255);
         this.g = constrain(this.g, 0, 255);
@@ -221,16 +148,14 @@ class Scatola {
     display() {
         // POLIEDRI
         push();
-        translate(this.xOffset, this.yOffset, this.zOffset);
-        //noFill();
-        //stroke(this.r);
-        //strokeWeight(1);
-        //noFill();
-        strokeWeight(1);
-        stroke(this.r, this.g, this.b, 180);
+        translate(this.offset.x, this.offset.y, this.offset.z);
+        rotateX(this.rotation.x);
+        rotateY(this.rotation.y);
+        rotateZ(this.rotation.z);
+        strokeWeight(dimMax * 0.005);
+        stroke(this.r, this.g, this.b, 120);
         fill(this.r, this.g, this.b, 35);
         box(this.x, this.y, this.z);
         pop();
-
     }
 }

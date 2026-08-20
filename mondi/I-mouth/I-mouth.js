@@ -19,12 +19,23 @@ const textColor = 50;
 
 var fonts = [];
 
+// audio
+let starsAudio;
+let padAudio;
+let glitchAudio;
+let nasaAudio;
+
 function preload() {
     fonts.push(loadFont("../../font/IBMPlexMono-Bold.ttf"));
     //fonts.push(loadFont("../font/IBMPlexMono-Light.ttf"));
     fonts.push(loadFont("../../font/IBMPlexMono-Medium.ttf"));
     fonts.push(loadFont("../../font/IBMPlexMono-Regular.ttf"));
     //fonts.push(loadFont("../font/IBMPlexMono-Thin.ttf"));
+
+    starsAudio = loadSound("audio/starsAudio.mp3");
+    padAudio = loadSound("audio/padAudio.mp3");
+    glitchAudio = loadSound("audio/glitchAudio.mp3");
+    nasaAudio = loadSound("audio/nasaAudio.mp3");
 }
 
 function setup() {
@@ -33,7 +44,7 @@ function setup() {
     textAlign(CENTER, BOTTOM);
     rectMode(CENTER);
     angleMode(DEGREES);
-    frameRate(30);
+    frameRate(60);
     smooth();
 
     // dimensioni
@@ -52,6 +63,8 @@ function setup() {
     for (let i = 0; i < peopleNum; i++) {
         people.push(new Persona(i));
     }
+
+    startAudioLoop();
 }
 
 function draw() {
@@ -72,7 +85,7 @@ function draw() {
     translate(0, -roomSize * 1.5, 0);
     rotateX(90);
     fill(skyColor);
-    rect(0,0,roomSize*2,roomSize*2);
+    rect(0, 0, roomSize * 2, roomSize * 2);
     pop();
 
     // RAGNO
@@ -86,6 +99,33 @@ function draw() {
         people[n].update();
     }
 }
+
+function mousePressed() {
+    userStartAudio();
+}
+function startAudioLoop() {
+    starsAudio.loop();
+    starsAudio.amp(0.2);
+    padAudio.loop();
+    padAudio.amp(0.1);
+    glitchAudio.loop();
+    glitchAudio.amp(0.1);
+    nasaAudio.loop();
+    nasaAudio.amp(0.2);
+}
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        starsAudio.pause();
+        padAudio.pause();
+        glitchAudio.pause();
+        nasaAudio.pause();
+    } else {
+        starsAudio.play();
+        padAudio.play();
+        glitchAudio.play();
+        nasaAudio.play();
+    }
+});
 
 class Persona {
     constructor(i) {
@@ -269,7 +309,7 @@ class Ragno {
         if (col.z < 0 || col.z > 100) {
             this.colorSpeed.z *= -1;
         }
-        this.color = color(col.x, col.y, col.z,100);
+        this.color = color(col.x, col.y, col.z, 100);
     }
     display() {
         push();
