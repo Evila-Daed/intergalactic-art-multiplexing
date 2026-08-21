@@ -2,6 +2,14 @@ const N = 100;
 const vertexArray = [];
 let dimMax = 0;
 
+let padAudio;
+let glitchAudio;
+
+function preload() {
+    padAudio = loadSound("audio/padAudio.mp3");
+    glitchAudio = loadSound("audio/glitchAudio.mp3");
+}
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(60);
@@ -14,7 +22,7 @@ function setup() {
         vertexArray.push(new Vertice(i));
     }
 
-    background(20);
+    startAudioLoop();
 }
 
 function draw() {
@@ -111,3 +119,22 @@ class Vertice {
         circle(this.pos.x, this.pos.y, this.size);
     }
 }
+
+function mousePressed() {
+    userStartAudio();
+}
+function startAudioLoop() {
+    padAudio.loop();
+    padAudio.amp(0.2);
+    glitchAudio.loop();
+    glitchAudio.amp(0.2);
+}
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        padAudio.pause();
+        glitchAudio.pause();
+    } else {
+        padAudio.play();
+        glitchAudio.play();
+    }
+});
