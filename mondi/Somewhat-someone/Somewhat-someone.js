@@ -1,7 +1,7 @@
 const pointSpeedMinMax = [0.01, 5];
 var restartChance = 0.0025;
 var bornChance = 0.01;
-const viteNum = 20;
+const viteNum = 10;
 var vite = [];
 
 var mainCanvas;
@@ -9,14 +9,13 @@ var tempCanvas;
 
 var fonts = [];
 
-const bgColor = 120;
+const bgColor = 180;
 
 function preload() {
     fonts.push(loadFont("../../font/IBMPlexMono-Bold.ttf"));
     fonts.push(loadFont("../../font/IBMPlexMono-Light.ttf"));
     fonts.push(loadFont("../../font/IBMPlexMono-Medium.ttf"));
     fonts.push(loadFont("../../font/IBMPlexMono-Regular.ttf"));
-    fonts.push(loadFont("../../font/IBMPlexMono-Thin.ttf"));
 }
 
 function setup() {
