@@ -1,13 +1,18 @@
 // dimensioni
 let dimMax;
 
+// audio
+const audioFiles = [];
+let audioPlayers = [];
+const audioPlayersNum = 4;
+
 // walkers
 const walkersNum = 1000;
 let walkers = [];
 
 const walkersColorChangeCoeff = 1;
 const walkersRgbMinMax = [0, 255];
-const walkersAlphaMinMax = [2.5, 40];
+const walkersAlphaMinMax = [2.5, 100];
 
 const walkersDirChangeMinMax = [10, 75];
 
@@ -28,6 +33,12 @@ const rotationForce = 0.00002;
 const mouseForce = 0.75;
 let mouseRadius;
 
+function preload() {
+    for (let i = 1; i <= 12; i++) {
+        audioFiles.push(loadSound(`homepage/audio/${i}.mp3`));
+    }
+}
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(60);
@@ -39,6 +50,10 @@ function setup() {
     // walkers generation
     for (let i = 0; i < walkersNum; i++) {
         walkers.push(new Walker());
+    }
+
+    for (let i = 0; i < audioPlayersNum; i++) {
+        playAudio(i);
     }
 }
 
@@ -228,6 +243,7 @@ class Walker {
     }
 }
 
+// DIMENSIONI
 function updateDimensions() {
     dimMax = min(width, height);
     walkersSizeMinMax = [
@@ -243,14 +259,12 @@ function updateDimensions() {
         dimMax * 0.0001
     ];
     starsPositionOffsetMax = dimMax * 0.002;
-    mouseRadius = dimMax * 0.05;
+    mouseRadius = dimMax * 0.1;
 }
-
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
     updateDimensions();
 }
-
 function resizeWalkers() {
     for (let walker of walkers) {
         walker.x = width * 0.5 + (walker.x - width * 0.5) * 0.9;
@@ -258,6 +272,7 @@ function resizeWalkers() {
     }
 }
 
+// TEMPISTICHE
 window.addEventListener("load", () => {
     let info = document.getElementById("info");
     let menu = document.getElementById("menu");
@@ -287,4 +302,42 @@ window.addEventListener("load", () => {
             menuToggle.textContent = "SHOW";
         }
     });
+});
+
+// AUDIO
+let audioPaused = false;
+function playAudio(i) {
+    if (audioPaused) return;
+
+    let audio = random(audioFiles);
+    let duration = random(10, 30);
+    let start = random(0, max(0, audio.duration() - duration));
+
+    audioPlayers[i] = audio;
+    audio.stop();
+    audio.amp(0);
+
+    audio.play(0, 1, 1, start, duration);
+    audio.amp(1, 1.5);
+
+    setTimeout(() => {
+        audio.amp(0, 1.5);
+    }, (duration - 1.5) * 1000);
+
+    setTimeout(() => {
+        playAudio(i);
+    }, duration * 1000);
+}
+document.addEventListener("visibilitychange", () => {
+    audioPaused = document.hidden;
+
+    for (const audio of audioPlayers) {
+        if (!audio) continue;
+
+        if (audioPaused) {
+            audio.pause();
+        } else {
+            audio.play();
+        }
+    }
 });
