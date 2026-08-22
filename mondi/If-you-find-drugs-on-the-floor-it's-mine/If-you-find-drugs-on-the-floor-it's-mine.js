@@ -1,14 +1,11 @@
-var myCanvas;
-
-const boxNum = 25;
+const boxNum = 50;
 var speedMinMax = [0.5, 2.5];
-
 var allBox = []; // lista con tutti i punti x,y,size
-
 let dimMax;
+let audioEnabled = true;
 
 function setup() {
-    myCanvas = createCanvas(windowWidth, windowHeight, WEBGL);
+    createCanvas(windowWidth, windowHeight, WEBGL);
     frameRate(60);
     smooth();
     angleMode(DEGREES);
@@ -36,15 +33,22 @@ function draw() {
     }
 }
 
-
 class Scatola {
     constructor(i) {
         this.i = i;
         this.speed = createVector(0, 0, 0);
         this.offset = createVector(0, 0, 0);
         this.rotation = createVector(0, 0, 0);
-        this.spawn();
 
+        // OSCILLATORE
+        this.osc = new p5.Oscillator();
+        let waves = ["sine", "triangle", "square"];
+        this.osc.setType(waves[i % waves.length]);
+        this.osc.start();
+        this.osc.amp(0);
+        this.osc.freq(220);
+
+        this.spawn();
     }
     spawn() {
         this.x = 0;
@@ -70,7 +74,7 @@ class Scatola {
         this.b = random(255);
         this.colorChangeSpeed = random(0.1, 10);
 
-        let rotationMax = 1.5;
+        let rotationMax = 1;
         this.rotation.set(
             random(-rotationMax, rotationMax),
             random(-rotationMax, rotationMax),
@@ -80,8 +84,9 @@ class Scatola {
     update() {
         this.move();
         this.colorChange();
+        this.audio();
 
-        if (random() < 0.001) {
+        if (random() < 0.01) {
             this.spawn();
         }
 
@@ -145,6 +150,15 @@ class Scatola {
         this.g = constrain(this.g, 0, 255);
         this.b = constrain(this.b, 0, 255);
     }
+    audio() {
+        let volume = constrain(map(abs(this.x), 0, dimMax, 0.01, 0.15), 0.01, 0.15);
+        let pan = constrain(map(this.y, -dimMax, dimMax, -1, 1), -1, 1);
+        let freq = constrain(map(this.z, -dimMax, dimMax, 50, 250), 50, 250);
+
+        this.osc.amp(audioEnabled ? volume : 0, 0.05);
+        this.osc.pan(pan);
+        this.osc.freq(freq, 0.05);
+    }
     display() {
         // POLIEDRI
         push();
@@ -159,3 +173,18 @@ class Scatola {
         pop();
     }
 }
+
+function mousePressed() {
+    userStartAudio();
+
+    for (let i = 0; i < allBox.length; i++) {
+        allBox[i].osc.amp(0.1, 0.1);
+    }
+}
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        audioEnabled = false;
+    } else {
+        audioEnabled = true;
+    }
+});
