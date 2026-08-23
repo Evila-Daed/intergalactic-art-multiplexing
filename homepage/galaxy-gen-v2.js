@@ -272,31 +272,17 @@ function resizeWalkers() {
     }
 }
 
-// TEMPISTICHE
 window.addEventListener("load", () => {
-    let info = document.getElementById("info");
     let menu = document.getElementById("menu");
     let menuToggle = document.getElementById("menu-toggle");
     let menuLinks = document.getElementById("menu-links");
 
-    // entrata frase
-    setTimeout(() => {
-        info.style.opacity = 1;
-    }, 1500); //1500
-    // uscita frase
-    setTimeout(() => {
-        info.style.opacity = 0;
-    }, 4500); //4500
-    // entrata menu
-    setTimeout(() => {
-        menu.style.opacity = 1;
-    }, 6000); //6000
+    menu.style.opacity = 1;
 
-    // apertura / chiusura link
     menuToggle.addEventListener("click", () => {
         if (menuLinks.classList.contains("collapsed")) {
             menuLinks.classList.remove("collapsed");
-            menuToggle.textContent = "HIDE";
+            menuToggle.textContent = "COLLAPSE";
         } else {
             menuLinks.classList.add("collapsed");
             menuToggle.textContent = "SHOW";
@@ -308,32 +294,24 @@ window.addEventListener("load", () => {
 let audioPaused = false;
 function playAudio(i) {
     if (audioPaused) return;
-
     let audio = random(audioFiles);
     let duration = random(10, 30);
     let start = random(0, max(0, audio.duration() - duration));
-
     audioPlayers[i] = audio;
-    audio.stop();
     audio.amp(0);
-
     audio.play(0, 1, 1, start, duration);
     audio.amp(1, 1.5);
-
     setTimeout(() => {
-        audio.amp(0, 1.5);
+        if (!audioPaused) audio.amp(0, 1.5);
     }, (duration - 1.5) * 1000);
-
     setTimeout(() => {
-        playAudio(i);
+        if (!audioPaused) playAudio(i);
     }, duration * 1000);
 }
 document.addEventListener("visibilitychange", () => {
     audioPaused = document.hidden;
-
     for (const audio of audioPlayers) {
         if (!audio) continue;
-
         if (audioPaused) {
             audio.pause();
         } else {
