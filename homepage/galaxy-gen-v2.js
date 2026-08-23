@@ -282,15 +282,15 @@ window.addEventListener("load", () => {
     // entrata frase
     setTimeout(() => {
         info.style.opacity = 1;
-    }, 500); //1500
+    }, 1500); //1500
     // uscita frase
     setTimeout(() => {
         info.style.opacity = 0;
-    }, 1000); //4500
+    }, 4500); //4500
     // entrata menu
     setTimeout(() => {
         menu.style.opacity = 1;
-    }, 1500); //6000
+    }, 6000); //6000
 
     // apertura / chiusura link
     menuToggle.addEventListener("click", () => {
