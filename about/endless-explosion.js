@@ -2,10 +2,12 @@ let schegge = [];
 const scheggeNum = 100;
 let dimMax = 0;
 
+function windowResized() {
+  resizeCanvas(window.innerWidth, window.innerHeight);
+}
 
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
-  angleMode(DEGREES);
+  createCanvas(window.innerWidth, window.innerHeight, WEBGL); angleMode(DEGREES);
   rectMode(CENTER);
   frameRate(60);
   smooth();
