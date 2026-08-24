@@ -3,7 +3,7 @@ const scheggeNum = 100;
 let dimMax = 0;
 
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight, WEBGL);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   angleMode(DEGREES);
   rectMode(CENTER);
   frameRate(60);
