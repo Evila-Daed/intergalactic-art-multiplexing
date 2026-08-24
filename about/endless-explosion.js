@@ -2,12 +2,9 @@ let schegge = [];
 const scheggeNum = 100;
 let dimMax = 0;
 
-function windowResized() {
-  resizeCanvas(window.innerWidth, window.innerHeight);
-}
-
 function setup() {
-  createCanvas(window.innerWidth, window.innerHeight, WEBGL); angleMode(DEGREES);
+  createCanvas(window.innerWidth, window.innerHeight, WEBGL);
+  angleMode(DEGREES);
   rectMode(CENTER);
   frameRate(60);
   smooth();
@@ -17,6 +14,11 @@ function setup() {
   for (let i = 0; i < scheggeNum; i++) {
     schegge.push(new Scheggia(i));
   }
+}
+
+function windowResized() {
+  resizeCanvas(window.innerWidth, window.innerHeight);
+  dimMax = min(width, height) * 0.5;
 }
 
 function draw() {
