@@ -20,7 +20,7 @@ function setup() {
 }
 
 function draw() {
-  background(20);
+  background(10);
 
   rotateX(frameCount * 0.173);
   rotateY(frameCount * 0.171);

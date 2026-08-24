@@ -18,67 +18,46 @@ html,
 body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
     width: 100%;
-    min-height: 100%;
+    height: 100%;
     background: black;
     font-family: "IBM Plex Mono", monospace;
 }
 
 canvas {
     position: fixed;
-    left: 0;
-    top: 0;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 0;
     display: block;
-    pointer-events: none;
 }
 
 #about {
-    position: relative;
+    position: fixed;
     z-index: 10;
 
-    width: 90vw;
-    max-width: 900px;
-    min-height: 100vh;
+    width: 80vw;
 
-    margin: 0 auto;
-    padding: 10vh 0;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%, -50%);
 
     text-align: center;
     color: #f2f2f2;
 }
 
-h1 {
-    margin: 0 0 8vh 0;
+p {
+    margin: 1.5vh 0;
     font-weight: 700;
-    font-size: clamp(1rem, 2vw, 1.6rem);
-    letter-spacing: 0.15em;
-}
-
-#content {
     font-size: clamp(0.7rem, 1.2vw, 1rem);
     letter-spacing: 0.1em;
     line-height: 1.8;
-}
-
-#content p {
-    margin: 2vh 0;
 }
 
 a {
     color: #f2f2f2;
     text-decoration: none;
     font-weight: 700;
-    opacity: 0.8;
-    text-shadow: 0 0 8px black, 0 0 20px black;
-}
-
-a:hover {
-    opacity: 1;
-}
-
-.bio {
-    max-width: 700px;
-    margin: 0 auto !important;
-    line-height: 1.7;
 }
