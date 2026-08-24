@@ -80,7 +80,7 @@ class Fiore {
     stroke(0);
     strokeWeight(this.size.x*0.01);
     translate(this.pos);
-    box(this.size.x*1.5,this.size.y*1.5,this.size.z*1.5);
+    box(this.size.x*2,this.size.y*2,this.size.z*2);
     pop();
 
     for (let e = 0; e < this.elementsNum; e++) {
@@ -102,7 +102,7 @@ class Fiore {
     }
     stroke(0);
     strokeWeight(this.size.x*0.02);
-    line(this.pos.x, this.pos.y+this.size.y/1.5, this.pos.z,
+    line(this.pos.x, this.pos.y+this.size.y, this.pos.z,
       this.pos.x, height / 2, this.pos.z
     );
 

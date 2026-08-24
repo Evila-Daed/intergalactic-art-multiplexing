@@ -1,5 +1,5 @@
 let poems = [];
-const N = 100;
+const N = 50;
 let fonts = [];
 
 function preload() {
@@ -25,6 +25,8 @@ function setup() {
 function draw() {
   orbitControl();
 
+  rotateY(frameCount*1.21);
+
   translate(-width * 0.5, -height * 0.5, 0);
   background(0);
 
@@ -41,7 +43,7 @@ class Poem {
   generateParam() {
     this.x = width / 2 * random(0.9, 1.1);//random(width*0.1,width*0.9);
     this.y = random(height * 0.1, height * 0.9);
-    this.z = random(-200, 200);
+    this.z = random(-height*0.05, height*0.05);
     this.size = min(width, height) * 0.015 * random(0.01, 1);
     this.color = color(random(220), random(220), random(220));
     this.alpha = 0;

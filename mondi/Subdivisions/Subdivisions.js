@@ -35,13 +35,13 @@ function draw() {
     push();
 
     let phaseX = angleX % 360;
-    let speedX = map(abs(sin(phaseX)), 0, 1, 0.0001, 8.13);
+    let speedX = map(abs(sin(phaseX)), 0, 1, 0.0001, 7.13);
     angleX += speedX;
     let phaseY = angleY % 360;
-    let speedY = map(abs(sin(phaseY)), 0, 1, 0.0001, 6.11);
+    let speedY = map(abs(sin(phaseY)), 0, 1, 0.0001, 3.11);
     angleY += speedY;
     let phaseZ = angleZ % 360;
-    let speedZ = map(abs(sin(phaseZ)), 0, 1, 0.0001, 5.29);
+    let speedZ = map(abs(sin(phaseZ)), 0, 1, 0.0001, 5.23);
     angleZ += speedZ;
     rotateX(angleX);
     rotateY(angleY);
@@ -54,7 +54,7 @@ function draw() {
 
     render(suddivisioni[0]);
 
-    if (random() < 0.5) {
+    if (random() < 0.2) {
         let disponibili = [];
         trovaDivisibili(suddivisioni[0], disponibili);
         if (disponibili.length > 0) {
@@ -62,7 +62,7 @@ function draw() {
         }
     }
 
-    if (random() < 0.1) {
+    if (random() < 0.05) {
         let resettabili = [];
         trovaResettabili(suddivisioni[0], resettabili);
         if (resettabili.length > 0) {
@@ -120,7 +120,7 @@ function suddividi(s) {
         x *= random(0.75, 1.25);
         y *= random(0.75, 1.25);
     }
-    if (random() < 0) {
+    if (random() < 0.1) {
         rot = random(-2, 2) + s.rot;
     }
 

@@ -1,4 +1,4 @@
-const N = 100;
+const N = 150;
 const vertexArray = [];
 let dimMax = 0;
 let audioEnabled = true;
