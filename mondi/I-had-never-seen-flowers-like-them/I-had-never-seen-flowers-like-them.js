@@ -1,5 +1,5 @@
 let flowers = [];
-const flowersNum = 20;
+const flowersNum = 50;
 let grass = [];
 const grassNum = 100;
 let cam1;
@@ -42,7 +42,7 @@ function draw() {
   noStroke();
   translate(0, height / 2, 0);
   rotateX(90);
-  box(xMax * 2, yMax * 2, zMax * 0.02);
+  box(xMax * 2, zMax * 2, yMax * 0.02);
   pop();
 
   for (let i = 0; i < flowersNum; i++) {
