@@ -7,15 +7,12 @@ var vite = [];
 var mainCanvas;
 var tempCanvas;
 
-var fonts = [];
+let font;
 
 const bgColor = 180;
 
 function preload() {
-    fonts.push(loadFont("../../font/IBMPlexMono-Bold.ttf"));
-    fonts.push(loadFont("../../font/IBMPlexMono-Light.ttf"));
-    fonts.push(loadFont("../../font/IBMPlexMono-Medium.ttf"));
-    fonts.push(loadFont("../../font/IBMPlexMono-Regular.ttf"));
+    font = loadFont("../../font/IBMPlexMono-Bold.ttf");
 }
 
 function setup() {
@@ -25,6 +22,8 @@ function setup() {
     mainCanvas.style("z-index", "-1");
     frameRate(120);
     smooth();
+    textFont(font);
+    tempCanvas.textFont(font);
     
     textAlign(CENTER, CENTER);
     angleMode(DEGREES);
@@ -126,7 +125,6 @@ class Vita {
         };
 
         this.rndAction = azioni[int(random(azioni.length))];
-        this.font = random(fonts);
 
         this.continueState = 0;
         this.aliveState = 1;
@@ -174,7 +172,6 @@ class Vita {
         tempCanvas.textAlign(CENTER, CENTER);
         tempCanvas.fill(this.vitaColor);
         tempCanvas.noStroke();
-        tempCanvas.textFont(this.font);
         tempCanvas.textSize(this.circleRadius * 0.1);
         tempCanvas.text(this.rndAction, this.circleCenter.x, this.circleCenter.y);
     }
