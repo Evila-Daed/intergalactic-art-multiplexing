@@ -1,23 +1,23 @@
 // persone
-var people = [];
-var peopleNum = 20;
-const peopleOnChance = 0.0005;
+let people = [];
+let peopleNum = 100;
+const peopleOnChance = 0.001;
 
 // ragno
-var ragni = [];
+let ragni = [];
 const ragniNum = 10;
 
-var font;
-
-var cam1;
-var roomSize;
+let cam1;
+let xMax = 0;
+let yMax = 0;
+let zMax = 0;
 
 const bgColor = 120;
 const skyColor = 220;
 const groundColor = 50;
 const textColor = 50;
 
-var fonts = [];
+let font;
 
 // audio
 let starsAudio;
@@ -26,11 +26,7 @@ let glitchAudio;
 let nasaAudio;
 
 function preload() {
-    fonts.push(loadFont("../../font/IBMPlexMono-Bold.ttf"));
-    //fonts.push(loadFont("../font/IBMPlexMono-Light.ttf"));
-    fonts.push(loadFont("../../font/IBMPlexMono-Medium.ttf"));
-    fonts.push(loadFont("../../font/IBMPlexMono-Regular.ttf"));
-    //fonts.push(loadFont("../font/IBMPlexMono-Thin.ttf"));
+    font =  loadFont("../../font/IBMPlexMono-Bold.ttf");
 
     starsAudio = loadSound("audio/starsAudio.mp3");
     padAudio = loadSound("audio/padAudio.mp3");
@@ -41,6 +37,7 @@ function preload() {
 function setup() {
     createCanvas(windowWidth, windowHeight, WEBGL);
 
+    textFont(font);
     textAlign(CENTER, BOTTOM);
     rectMode(CENTER);
     angleMode(DEGREES);
@@ -48,10 +45,12 @@ function setup() {
     smooth();
 
     // dimensioni
-    roomSize = min(width, height);
+    xMax = width;
+    yMax = height;
+    zMax = xMax;
 
     cam1 = createCamera();
-    cam1.setPosition(roomSize * 3, 0, 0);
+    cam1.setPosition(xMax * 3, 0, 0);
     cam1.lookAt(0, 0, 0);
 
     // ragno
@@ -75,17 +74,17 @@ function draw() {
     noStroke();
     // pavimento
     push();
-    translate(0, roomSize * 1.5, 0);
+    translate(0, yMax * 1.5, 0);
     rotateX(90);
     fill(groundColor);
-    rect(0, 0, roomSize * 2, roomSize * 2);
+    rect(0, 0, xMax * 2, zMax * 2);
     pop();
     // soffitto
     push();
-    translate(0, -roomSize * 1.5, 0);
+    translate(0, -yMax * 1.5, 0);
     rotateX(90);
     fill(skyColor);
-    rect(0, 0, roomSize * 2, roomSize * 2);
+    rect(0, 0, xMax * 2, zMax * 2);
     pop();
 
     // RAGNO
@@ -132,12 +131,28 @@ class Persona {
         this.i = i;
         this.active = 0;
     }
+    spanw() {
+        this.pos = createVector(random(-xMax * 0.75, xMax * 0.75), random(-yMax * 0.2, yMax * 0.75), random(-zMax * 0.75, zMax * 0.75));
+
+        this.rotYCoeff = random(360);
+        this.rotYSpeed = pow(random(0.01, 1), 2);
+        if (random() < 0.5) {
+            this.rotYSpeed *= -1;
+        }
+        this.textRandIndex = int(random(testi.length));
+        this.text = randomWrapText(testi[this.textRandIndex], 1, 4);
+        this.textDimension = zMax * 0.1 * random(0.25, 1);
+
+        this.relativeDim = 1;
+        this.decayFactor = random(0.0001, 0.01);
+        this.decayRamp = random(0.1, 0.5);
+
+        this.active = 1;
+    }
     update() {
         if (this.active === 0) {
             if (random() < peopleOnChance) {
-                this.randomizeParam();
-
-                this.active = 1;
+                this.spanw();
             }
         } else {
             this.display();
@@ -152,23 +167,7 @@ class Persona {
         }
         this.relativeDim -= this.decayFactor;
     }
-    randomizeParam() {
-        this.pos = createVector(random(-roomSize * 0.75, roomSize * 0.75), random(-roomSize * 0.2, roomSize * 0.75), random(-roomSize * 0.75, roomSize * 0.75));
-
-        this.rotYCoeff = random(360);
-        this.rotYSpeed = pow(random(0.01, 1), 2);
-        if (random() < 0.5) {
-            this.rotYSpeed *= -1;
-        }
-        this.textRandIndex = int(random(testi.length));
-        this.font = random(fonts);
-        this.text = randomWrapText(testi[this.textRandIndex], 1, 4);
-        this.textDimension = roomSize * 0.1 * random(0.25, 1);
-
-        this.relativeDim = 1;
-        this.decayFactor = random(0.0001, 0.01);
-        this.decayRamp = random(0.1, 0.5);
-    }
+    
     rotate() {
         this.rotYCoeff += this.rotYSpeed;
 
@@ -187,16 +186,13 @@ class Persona {
             translate(this.pos.x, this.pos.y - this.textDimension / 4, this.pos.z);
             rotateY(this.rotYCoeff);
             fill(textColor);
-            textFont(this.font);
             textSize(this.textDimension);
             text(this.text, 0, 0);
             pop();
 
             stroke(textColor);
             strokeWeight(this.textDimension * 0.1);
-            line(this.pos.x, this.pos.y, this.pos.z, this.pos.x, roomSize * 1.5 - 1, this.pos.z);
-            //strokeWeight(this.textDimension * 0.05);
-            //line(this.pos.x, roomSize - 1, this.pos.z, 0, 0, 0);
+            line(this.pos.x, this.pos.y, this.pos.z, this.pos.x, yMax * 1.5 - 1, this.pos.z);
         }
     }
 }
@@ -238,7 +234,7 @@ class Ragno {
     }
     spawn() {
         this.color = color(random(100), random(100), random(100));
-        this.pos = createVector(0, -roomSize * 0.5, 0);
+        this.pos = createVector(0, -yMax * 0.5, 0);
         this.speedMin = 0.1;
         this.speedMax = 2.5;
         this.speed = createVector(
@@ -287,13 +283,13 @@ class Ragno {
     move() {
         this.pos.add(this.speed.x, this.speed.y, this.speed.z);
 
-        if (this.pos.x < -roomSize || this.pos.x > roomSize) {
+        if (this.pos.x < -xMax || this.pos.x > xMax) {
             this.speed.x *= -1;
         }
-        if (this.pos.y < -roomSize || this.pos.y > roomSize * 2) {
+        if (this.pos.y < -yMax || this.pos.y > yMax * 2) {
             this.speed.y *= -1;
         }
-        if (this.pos.z < -roomSize || this.pos.z > roomSize) {
+        if (this.pos.z < -zMax || this.pos.z > zMax) {
             this.speed.z *= -1;
         }
 

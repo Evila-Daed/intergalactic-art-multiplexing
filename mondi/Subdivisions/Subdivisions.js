@@ -1,7 +1,12 @@
 let suddivisioni = [];
+
 let angleX = 0;
 let angleY = 0;
 let angleZ = 0;
+
+let freqX = 0;
+let freqY = 0;
+let freqZ = 0;
 
 function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
@@ -19,8 +24,8 @@ function setup() {
         x: 0,
         y: 0,
         z: 0,
-        w: width / 2,
-        h: height / 2,
+        w: width*0.5,
+        h: height*0.5,
         d: 5,
         hue: random(360),
         s: 0,
@@ -29,26 +34,31 @@ function setup() {
         children: [],
         level: 0
     });
+
+    freqX = random(1, 5);
+    freqY = random(1, 5);
+    freqZ = random(1, 5);
 }
 
 function draw() {
     push();
 
     let phaseX = angleX % 360;
-    let speedX = map(abs(sin(phaseX)), 0, 1, 0.0001, 7.13);
+    let speedX = map(abs(sin(phaseX)), 0, 1, 0.0001, freqX);
     angleX += speedX;
     let phaseY = angleY % 360;
-    let speedY = map(abs(sin(phaseY)), 0, 1, 0.0001, 3.11);
+    let speedY = map(abs(sin(phaseY)), 0, 1, 0.0001, freqY);
     angleY += speedY;
     let phaseZ = angleZ % 360;
-    let speedZ = map(abs(sin(phaseZ)), 0, 1, 0.0001, 5.23);
+    let speedZ = map(abs(sin(phaseZ)), 0, 1, 0.0001, freqZ);
     angleZ += speedZ;
     rotateX(angleX);
     rotateY(angleY);
     rotateZ(angleZ);
 
-    scale(1.5);
+    scale(1.25);
     translate(-width / 4, -height / 4);
+    
 
     background(0, 0, 10);
 
@@ -121,7 +131,7 @@ function suddividi(s) {
         y *= random(0.75, 1.25);
     }
     if (random() < 0.1) {
-        rot = random(-2, 2) + s.rot;
+        rot = random(-1.5, 1.5) + s.rot;
     }
 
     if (vertical) {

@@ -1,7 +1,10 @@
 const boxNum = 50;
 var speedMinMax = [0.5, 2.5];
 var allBox = []; // lista con tutti i punti x,y,size
-let dimMax;
+let xMax = 0;
+let yMax = 0;
+let zMax = 0;
+
 let audioEnabled = true;
 
 function setup() {
@@ -10,19 +13,20 @@ function setup() {
     smooth();
     angleMode(DEGREES);
 
-    dimMax = min(width, height) * 0.5;
+    xMax = width * 0.5;
+    yMax = height * 0.5;
+    zMax = xMax;
 
     // crea array di vertici
     for (var i = 0; i < boxNum; i++) {
         allBox.push(new Scatola(i));
     }
-    background(0);
 }
 
 function draw() {
     orbitControl();
 
-    background(0);
+    background(20);
 
     rotateX(frameCount * 0.15);
     rotateY(frameCount * 0.17);
@@ -51,11 +55,17 @@ class Scatola {
         this.spawn();
     }
     spawn() {
+        // dimensions
         this.x = 0;
         this.y = 0;
         this.z = 0;
 
-        this.offset.set(0, 0, 0);
+        let offsetCoeff = 0.025;
+        this.offset.set(
+            random(-zMax * offsetCoeff, zMax * offsetCoeff),
+            random(-zMax * offsetCoeff, zMax * offsetCoeff),
+            random(-zMax * offsetCoeff, zMax * offsetCoeff)
+        );
 
         let dirX = random() < 0.5 ? -1 : 1;
         let dirY = random() < 0.5 ? -1 : 1;
@@ -69,9 +79,9 @@ class Scatola {
             random(speedMinMax[0], speedMinMax[1]) * dirZ
         );
 
-        this.r = random(255);
-        this.g = random(255);
-        this.b = random(255);
+        this.r = random(200);
+        this.g = random(200);
+        this.b = random(200);
         this.colorChangeSpeed = random(0.1, 10);
 
         let rotationMax = 1;
@@ -93,19 +103,19 @@ class Scatola {
         this.display();
     }
     move() {
-        if (this.x <= -dimMax || this.x >= dimMax) {
+        if (this.x <= -xMax || this.x >= xMax) {
             this.speed.x *= -1;
         }
-        if (this.y <= -dimMax || this.y >= dimMax) {
+        if (this.y <= -yMax || this.y >= yMax) {
             this.speed.y *= -1;
         }
-        if (this.z <= -dimMax || this.z >= dimMax) {
+        if (this.z <= -zMax || this.z >= zMax) {
             this.speed.z *= -1;
         }
 
-        if (this.offset.x < -dimMax / 2) {
+        if (this.offset.x < -xMax / 2) {
             this.offset.x += abs(this.speed.x * 0.3);
-        } else if (this.offset.x > dimMax / 2) {
+        } else if (this.offset.x > xMax / 2) {
             this.offset.x -= abs(this.speed.x * 0.3);
         } else {
             if (random(1) < 0.50) {
@@ -114,9 +124,9 @@ class Scatola {
                 this.offset.x -= abs(this.speed.x * 0.3);
             }
         }
-        if (this.offset.y < -dimMax / 2) {
+        if (this.offset.y < -yMax / 2) {
             this.offset.y += abs(this.speed.y * 0.3);
-        } else if (this.offset.y > dimMax / 2) {
+        } else if (this.offset.y > yMax / 2) {
             this.offset.y -= abs(this.speed.y * 0.3);
         } else {
             if (random(1) < 0.50) {
@@ -125,9 +135,9 @@ class Scatola {
                 this.offset.y -= abs(this.speed.y * 0.3);
             }
         }
-        if (this.offset.z < -dimMax / 2) {
+        if (this.offset.z < -zMax / 2) {
             this.offset.z += abs(this.speed.z * 0.3);
-        } else if (this.offset.z > dimMax / 2) {
+        } else if (this.offset.z > zMax / 2) {
             this.offset.z -= abs(this.speed.z * 0.3);
         } else {
             if (random(1) < 0.50) {
@@ -151,9 +161,9 @@ class Scatola {
         this.b = constrain(this.b, 0, 255);
     }
     audio() {
-        let volume = constrain(map(abs(this.x), 0, dimMax, 0.01, 0.15), 0.01, 0.15);
-        let pan = constrain(map(this.y, -dimMax, dimMax, -1, 1), -1, 1);
-        let freq = constrain(map(this.z, -dimMax, dimMax, 50, 250), 50, 250);
+        let volume = constrain(map(abs(this.x), 0, zMax, 0.01, 0.15), 0.01, 0.15);
+        let pan = constrain(map(this.y, -yMax, yMax, -1, 1), -1, 1);
+        let freq = constrain(map(this.z, -zMax, zMax, 50, 250), 50, 250);
 
         this.osc.amp(audioEnabled ? volume : 0, 0.05);
         this.osc.pan(pan);
@@ -166,9 +176,9 @@ class Scatola {
         rotateX(this.rotation.x);
         rotateY(this.rotation.y);
         rotateZ(this.rotation.z);
-        strokeWeight(dimMax * 0.005);
+        strokeWeight(zMax * 0.005);
         stroke(this.r, this.g, this.b, 120);
-        fill(this.r, this.g, this.b, 35);
+        fill(this.r, this.g, this.b, 25);
         box(this.x, this.y, this.z);
         pop();
     }

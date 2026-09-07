@@ -1,7 +1,7 @@
-const pointSpeedMinMax = [0.01, 5];
+const pointSpeedMinMax = [0.1, 1.5];
 var restartChance = 0.0025;
-var bornChance = 0.01;
-const viteNum = 10;
+var bornChance = 0.001;
+const viteNum = 25;
 var vite = [];
 
 var mainCanvas;
@@ -23,7 +23,7 @@ function setup() {
     tempCanvas = createGraphics(windowWidth, windowHeight);
     mainCanvas.position(0, 0);
     mainCanvas.style("z-index", "-1");
-    frameRate(30);
+    frameRate(120);
     smooth();
     
     textAlign(CENTER, CENTER);
