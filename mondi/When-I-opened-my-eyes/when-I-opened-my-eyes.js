@@ -1,6 +1,6 @@
 let font;
 let poems = [];
-const poemNum = 51;
+const poemNum = 101;
 
 let textDim;
 
@@ -18,7 +18,7 @@ function setup() {
 
   textDim = height * 0.05;
 
-  for (let i = poemNum-1; i >= 0; i--) {
+  for (let i = poemNum - 1; i >= 0; i--) {
     poems.push(new Poem(i));
   }
 
@@ -36,7 +36,8 @@ function draw() {
 class Poem {
   constructor(i) {
     this.i = i;
-    this.pos = createVector(0,0,0);
+    this.pos = createVector(0, 0, 0);
+    this.rot = createVector(0,0,0);
     this.spawn();
   }
   spawn() {
@@ -52,45 +53,56 @@ class Poem {
     this.scopeNoun = random(scopeNouns);
     this.lastWord = random(lastWords);
 
-    this.changeChance = random(0.0001,0.1);
-
     if (this.i != 0) {
-      let posCoeff = textDim * 7.5;
-      this.pos.set(random(-posCoeff,posCoeff),random(-posCoeff,posCoeff),-textDim*4);
-      this.color = color(random(20,220),random(20,220),random(20,220),150);
-      this.size = textDim * pow(random(0.1,1),2.5);
-      this.respawnChance = random(0.001,0.1);
-      this.rotY = random(-10,10);
+      let posCoeff = textDim * 8;
+      this.pos.set(random(-posCoeff, posCoeff), random(-posCoeff, posCoeff), -textDim * 4);
+      this.color = color(random(20, 220), random(20, 220), random(20, 220), 150);
+      this.size = textDim * pow(random(0.1, 1), 4);
+      this.changeChance = random(0.0001, 0.01);
+      this.respawnChance = random(0.0001, 0.01);
+      let rotCoeff = 5;
+      this.rot.set(random(-rotCoeff, rotCoeff),random(-rotCoeff, rotCoeff),0);
     } else {
-      this.pos.set(0,0,0);
-      this.color = color(220,255);
+      this.pos.set(0, 0, 0);
+      this.color = color(220, 255);
       this.size = textDim;
+      this.changeChance = 0.01;
       this.respawnChance = 0;
-      this.rotY = 0;
+      this.rot.set(0,0,0);
     }
   }
   update() {
     if (random(1) < this.changeChance) {
       this.adj1 = random(adjectives);
-    } else if (random(1) < this.changeChance) {
+    }
+    if (random(1) < this.changeChance) {
       this.adj2 = random(adjectives);
-    } else if (random(1) < this.changeChance) {
+    }
+    if (random(1) < this.changeChance) {
       this.noun1 = random(nouns);
-    } else if (random(1) < this.changeChance) {
+    }
+    if (random(1) < this.changeChance) {
       this.adv1 = random(adverbs);
-    } else if (random(1) < this.changeChance) {
+    }
+    if (random(1) < this.changeChance) {
       this.verb1 = random(verbs);
-    } else if (random(1) < this.changeChance) {
+    }
+    if (random(1) < this.changeChance) {
       this.adj3 = random(adjectives);
-    } else if (random(1) < this.changeChance * 0.5) {
+    }
+    if (random(1) < this.changeChance * 0.5) {
       this.bodyPart = random(bodyParts);
-    } else if (random(1) < this.changeChance * 0.5) {
+    }
+    if (random(1) < this.changeChance * 0.5) {
       this.scopeAdjective = random(scopeAdjectives);
-    } else if (random(1) < this.changeChance * 0.5) {
+    }
+    if (random(1) < this.changeChance * 0.5) {
       this.scopeNoun = random(scopeNouns);
-    } else if (random(1) < this.changeChance * 0.5) {
+    }
+    if (random(1) < this.changeChance * 0.5) {
       this.lastWord = random(lastWords);
-    } else if (random() < this.respawnChance) {
+    }
+    if (random() < this.respawnChance) {
       this.spawn();
     }
 
@@ -102,7 +114,9 @@ class Poem {
 
     push();
     translate(this.pos);
-    rotateY(this.rotY);
+    rotateX(this.rot.x);
+    rotateY(this.rot.y);
+    rotateZ(this.rot.z);
 
     fill(this.color);
     noStroke();
