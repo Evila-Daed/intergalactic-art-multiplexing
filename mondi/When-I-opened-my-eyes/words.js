@@ -11,6 +11,11 @@ around my
 [beings, essence, substance, matter].
 */
 
+const bodyParts = ["eyes", "mouth", "ears", "ass", "fingers", "door"];
+const scopeAdjectives = ["endless", "infinite", "boundless"];
+const scopeNouns = ["spacetimes", "dimensions", "realities", "explosions"];
+const lastWords = ["beings", "essence", "substance", "matter"];
+
 const adjectives = [
     "abandoned",
     "able",
@@ -1144,7 +1149,6 @@ const adjectives = [
     "terrific",
     "testy",
     "thankful",
-    "that",
     "these",
     "thick",
     "thin",
